@@ -32,16 +32,26 @@ Or you could link to interesting content: [this is a link](http://en.wikipedia.o
 
 Hints help the students to find a correct solution for the exercise. Hints are optional, but their usage is highly recommended.
 
-*** =sample_code
+*** =pre_exercise_code
 
 ```{r,eval=FALSE}
-# The sample code is what is shown in the students editor by default
+# Pre-exercise code is executed before the exercise starts (what's in a name...)
+# It can be used to:
+# Pre-load a dataset
+# Render graphs that are shown at the start of the exercise
+# ...
 ```
 
 *** =solution
 
 ```{r,eval=FALSE}
 # The solution code solves the assignement. Make sure the solution passes the submission correctness test (we will check this;-)!
+```
+
+*** =sample_code
+
+```{r,eval=FALSE}
+# The sample code is what is shown in the students editor by default
 ```
 
 *** =sct
@@ -52,16 +62,6 @@ Hints help the students to find a correct solution for the exercise. Hints are o
 # Based on these inputs the SCT returns:
 # (i) whether the students code was correct
 # (ii) a message to the student to either help him find what was wrong or congragulate him on finding the solution.
-```
-
-*** =pre_exercise_code
-
-```{r,eval=FALSE}
-# Pre-exercise code is executed before the exercise starts (what's in a name...)
-# It can be used to:
-# Pre-load a dataset
-# Render graphs that are shown at the start of the exercise
-# ...
 ```
 
 ---
@@ -78,10 +78,10 @@ Assigment here.
 
 Hint here. 
 
-*** =sample_code
+*** =pre_exercise_code
 
 ```{r,eval=FALSE}
-# Sample code here
+# Pre-exercise code here
 ```
 
 *** =solution
@@ -90,12 +90,14 @@ Hint here.
 # Solution code here 
 ```
 
-*** =sct
+*** =sample_code
+
 ```{r,eval=FALSE}
-# Submission Correctness Test here
+# Sample code here
 ```
 
-*** =pre_exercise_code
+*** =sct
+
 ```{r,eval=FALSE}
-# Pre-exercise code here
+# Submission Correctness Test here
 ```
