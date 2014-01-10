@@ -3,7 +3,7 @@ export(author_course,
        datacamp_login, 
        upload_chapter,
        upload_course); 
-
+ 
 import(slidify);
 import(RCurl);
 import(httr);
