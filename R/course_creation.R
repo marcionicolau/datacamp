@@ -153,10 +153,13 @@ render_chapter_json_for_datacamp = function(payload){
                                solution      = extract_code( slide$solution$content ),
                                sct           = extract_code( slide$sct$content), 
                                pre_exercise_code = extract_code( slide$pre_exercise_code$content) );
-    if( !is.null(slide$type) ){  
+    if (!is.null(slide$type)) {  
       exerciseList[[i]][["type"]] = slide$type;
-      if(slide$type == "MultipleChoiceExercise"){
+      if (slide$type == "MultipleChoiceExercise"){
         exerciseList[[i]][["instructions"]] = make_multiple_choice_vector(exerciseList[[i]][["instructions"]])
+        if (!is.null(slide$contains_graph)) {
+          exerciseList[[i]][["contains_graph"]] = slide$contains_graph;
+        }
       }
     }
   }
