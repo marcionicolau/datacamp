@@ -153,7 +153,12 @@ render_chapter_json_for_datacamp = function(payload){
                                solution      = extract_code( slide$solution$content ),
                                sct           = extract_code( slide$sct$content), 
                                pre_exercise_code = extract_code( slide$pre_exercise_code$content) );
-    if( !is.null(slide$type) ){  exerciseList[[i]][["type"]] = slide$type; }
+    if( !is.null(slide$type) ){  
+      exerciseList[[i]][["type"]] = slide$type;
+      if(slide$type == "MultipleChoiceExercise"){
+        exerciseList[[i]][["instructions"]] = make_multiple_choice_vector(exerciseList[[i]][["instructions"]])
+      }
+    }
   }
   
   # Join everything: 
@@ -197,6 +202,18 @@ upload_chapter_within_course = function(chapter,open=FALSE){
   message(paste("Successfully uploaded chapter: ",chapter),"!");
   message("###"); 
 }
+
+# Function to create an array with the multiple choice options: 
+make_multiple_choice_vector = function(instructions){ 
+  pattern = "<li>(.*?)</li>";
+  instruction_lines =  strsplit(instructions,"\n")[[1]];
+  r = regexec(pattern, instruction_lines);
+  matches = regmatches(instruction_lines,r);
+  extracted_matches = sapply(matches,function(x) x[2]);
+  multiple_choice_vector = extracted_matches[!is.na(extracted_matches)];
+  
+  return(multiple_choice_vector)
+} 
 
 # FIRST implementation of checks for exercises
 # $checks stores them
