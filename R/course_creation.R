@@ -152,7 +152,8 @@ render_chapter_json_for_datacamp = function(payload){
                                sample_code   = extract_code( slide$sample_code$content ),
                                solution      = extract_code( slide$solution$content ),
                                sct           = extract_code( slide$sct$content), 
-                               pre_exercise_code = extract_code( slide$pre_exercise_code$content) )
+                               pre_exercise_code = extract_code( slide$pre_exercise_code$content) );
+    if( !is.null(slide$type) ){  exerciseList[[i]][["type"]] = slide$type; }
   }
   
   # Join everything: 
