@@ -135,6 +135,7 @@ render_chapter_json_for_datacamp = function(payload){
                     chapter=list(
                       description=payload$description, 
                       number=0,
+                      title_meta=payload$chapterTitleMeta,
                       title=payload$chapterTitle
                     ) 
   ) 
