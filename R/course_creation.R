@@ -68,8 +68,23 @@ upload_course = function(open=TRUE){
     the_course_json = toJSON(course);
     upload_course_json(the_course_json);
   }
-  
-} 
+}
+
+# 6. Check SCT's
+check_scts = function(inputFile, outputFile, ...){ 
+  # not efficient, needs refactoring
+  payload = suppressWarnings(slidify(inputFile, return_page=TRUE,...));  # Get the payload  
+  slides = payload$slides;
+
+  for (i in 1:length(slides)) {
+    slide = slides[[i]]
+    result = tryCatch({
+        eval(parse(text=extract_code(slide$sct$content)))
+    }, error = function(e) {
+        print(paste0("Exercise '", html2txt(slide$title), "' throws an error!"))
+    })
+  }
+}
 
 ##### HELP FUNCTIONS ##### 
 upload_chapter_json = function(theJSON, open=TRUE){ 
