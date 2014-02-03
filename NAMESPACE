@@ -2,7 +2,8 @@ export(author_course,
        preview_chapter, 
        datacamp_login, 
        upload_chapter,
-       upload_course); 
+       upload_course,
+       check_scts); 
  
 import(slidify);
 import(RCurl);
