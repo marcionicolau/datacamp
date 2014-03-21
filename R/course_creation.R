@@ -96,7 +96,7 @@ upload_chapter_json = function(theJSON, open=TRUE){
   auth_token = .DATACAMP_ENV$auth_token;    
   url = paste0(base_url,"?auth_token=", auth_token);
   
-  x = try(httr:::POST(url = url, body = theJSON, add_headers(`Content-Type` = "application/json")))
+  x = try(httr:::POST(url = url, body = theJSON, add_headers(c(`Content-Type` = "application/json", `Expect` = ""))))
   if( class(x) != "response" ){
     stop("Something went wrong. We didn't get a valid response from the datacamp server. Try again or contact info@datacamp.com in case you keep experiencing this problem.")
   } else { 
@@ -132,7 +132,7 @@ upload_course_json = function(theJSON, open=TRUE){
   auth_token = .DATACAMP_ENV$auth_token;    
   url = paste0(base_url,"?auth_token=", auth_token);
   
-  x = httr:::POST(url=url, body = theJSON, add_headers("Content-Type" = "application/json"))   
+  x = httr:::POST(url=url, body = theJSON, add_headers(c("Content-Type" = "application/json", "Expect" = "")))   
   course_id = content(x)$id;
   message("Course succesfully uploaded to datacamp.com");
   redirect_url = paste0(redirect_url,course_id);
