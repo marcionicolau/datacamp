@@ -92,7 +92,7 @@ upload_chapter_json = function(theJSON, open=TRUE){
     stop("Please login to datacamp first, using the datacamp_login function");    
   } 
   base_url     = "http://api.datacamp.com/chapters/create_from_r.json";
-  redirect_url = "http://www.datacamp.com/edit_course/";
+  redirect_url = "http://teach.datacamp.com/courses/edit/";
   auth_token = .DATACAMP_ENV$auth_token;    
   url = paste0(base_url,"?auth_token=", auth_token);
   
@@ -128,7 +128,7 @@ upload_course_json = function(theJSON, open=TRUE){
     stop("Please login to datacamp first, using the datacamp_login function");    
   } 
   base_url     = "http://api.datacamp.com/courses/create_from_r.json";
-  redirect_url = "http://www.datacamp.com/edit_course/";
+  redirect_url = "http://teach.datacamp.com/courses/edit/";
   auth_token = .DATACAMP_ENV$auth_token;    
   url = paste0(base_url,"?auth_token=", auth_token);
   
