@@ -18,7 +18,7 @@ If you're not yet familiar with R Markdown, it's probably a good idea to get sta
 
 ## Create interactive courses using the datacamp R package
 1. **Install the datacamp R package:**
-    ```
+    ```ruby
 install.packages("devtools"); library("devtools");
 install_github("datacampSCT","data-camp");
 install_github("datacamp","data-camp");
@@ -28,25 +28,25 @@ library("datacamp");
 The code above will download and install the datacamp R package. Alternatively, you can also download the source code above.
 
 2. **Author a course/chapter:**
-   ```
+   ```ruby
 author_course("courseName")
 ```
 The `author_course` function will: (i) create a folder in you current working directory with the name "courseName", (ii) initialize a Git repo for version control, (iii) copy a demo file "index.Rmd" inside that folder so you can get started, and (iv) open "index.Rmd", a template for creating a chapter, such that you can start writing exercises in the template. Find more information on the (necessary) blocks of an interactive exercise on DataCamp below or just read the instructions in the template.
 
 3. **Preview your chapter locally:**
-   ```
+   ```ruby
 preview_chapter("chapterFileName.Rmd")
 ```
 This will open your browser with a preview of the chapter locally. Currently it is just an easy way to get an overview of your chapter. In the future, the preview will inform you on the completeness, correctness and quality of your tutorial.
 
 4. **Log in to datacamp.com:**
-   ```
+   ```ruby
 datacamp_login("youremail@someprovider.com","yourpassword")
 ```
 This will allow you to upload a chapter directly to datacamp.com, with the upload_chapter function.
 
 5. **Upload a chapter to DataCamp:**
-   ```
+   ```ruby
 upload_chapter("chapterFileName.Rmd")
 ```
 The file `chapterFileName` will be parsed by the slidify package, and uploaded to datacamp.com under your account. When the chapter is successfully uploaded, your browser will automatically open the web interface, so you can preview the course or tutorial online.
@@ -73,7 +73,7 @@ SCT's are run in the students workspace, so you can use all objects a student cr
 
 2. **Testing the students submission:**<br>
 The Submission Correctness Test can take everything described in step 1 as input, and processes it to evaluate whether the response of a student was correct. These tests can be really simple or relatively advanced, but they are always written in R, so you can leverage existing functionality. To make writing these SCTs as simple as possible, the datacamp R package (which is preloaded on our servers) contains some functionality for often used tests. You can install it locally through:
-   ```
+   ```ruby
 library("devtools");
 install_github("datacampSCT","data-camp")
 install_github("datacamp","data-camp");
@@ -95,33 +95,33 @@ The above examples show the immense potential of SCTs to automate teaching. The 
 
 #### Example one: illustrating the concept of an SCT
 Let's start with a really dummed down example to illustrate the idea behind an SCT. Suppose you ask a student to assign the value 42 to the variable `x`. To test what a user did, you could write the following SCT: <i>(example provided for educational purposes only)</i>
-```r
+```ruby
 if( x == 5 ){ 
-    DM.result <- list(TRUE, “Well done, you genius!”)
+    DM.result <- list(TRUE, "Well done, you genius!")
 }else{ 
-	DM.result <- list(FALSE, “Please assign 5 to x”) 
+	DM.result <- list(FALSE, "Please assign 5 to x") 
 }
 ```
 
 #### Example two: checking whether a student typed certain expressions
 Suppose you expect a student to type `17%%4` and `2^5` somewhere in the editor, and you would like to check whether a student actually did that. The SCT then simply becomes:
-```r
+```ruby
 DM.result <- code_test( c("17%%4","2^5") )
 ```
 
 #### Example three: checking whether a student assigned a value to a variable
 Suppose you expect a student to assign the value 5 to the variable `my.apples`. The SCT, then simply becomes:
-```r
+```ruby
 DM.result <- closed_test(names="my,apples",values=5)
 ```
 Similarly, to test the values of multiple variables, you can use:
-```r
+```ruby
 names  <- c("my.apples","my.oranges","my.fruit")
 values <- c(5,6,"my.apples+my.oranges")
 DM.result <- closed_test(names,values)
 ```
 Using the build in `closed_test` function ensures that useful help messages are generated automatically for the student. Obviously, you can as well make use of values in the users workspace to test. Suppose for example you'd like to test whether a student constructed a named list (my.list) with the components: a vector (my.vector), a matrix (my.matrix) and a data frame (my.df). This can be checked through:
-```r
+```ruby
 name   <- "my.list"
 value  <- "list(VECTOR=my.vector,MATRIX=my.matrix,DATAFRAME=my.df)"
 DM.result <- closed_test(name,value)
