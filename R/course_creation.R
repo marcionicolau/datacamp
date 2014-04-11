@@ -8,7 +8,7 @@ author_course = function(chapdir, ...) {
   message("Finished creating course directory...")
   message("Switching to course directory...")
   message("Initializing Git Repo")
-  suppressMessages(author(deckdir = chapdir,  scaffold = system.file('skeleton', package = 'datacamp'), ...) )
+  suppressMessages(author(deckdir = chapdir, use_git = FALSE, scaffold = system.file('skeleton', package = 'datacamp'), ...) )
   message(paste0("Opening first chapter..."))
 }
 
