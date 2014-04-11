@@ -8,67 +8,94 @@ author_course = function(chapdir, ...) {
   message("Finished creating course directory...")
   message("Switching to course directory...")
   message("Initializing Git Repo")
-  suppressMessages(author(deckdir = chapdir, use_git = FALSE, scaffold = system.file('skeleton', package = 'datacamp'), ...) )
+  suppressMessages(author(deckdir = chapdir,  use_git = FALSE, scaffold = system.file('skeleton', package = 'datacamp'), ...) )
   message(paste0("Opening first chapter..."))
 }
 
 # Preview chapter:
-preview_chapter = function(inputFile, outputFile,...) {
-  payload = suppressWarnings(slidify(inputFile, return_page = TRUE,...) )
+preview_chapter = function(input_file, outputFile,...) {
+  payload = suppressWarnings(slidify(input_file, return_page = TRUE,...) )
   
   # Show the preview:
   if (missing(outputFile)) {
-    outputFile = gsub("*.[R]?md$", '.html', inputFile)
+    outputFile = gsub("*.[R]?md$", '.html', input_file)
   }
   browseURL(outputFile)
 }
 
-# Log in to datacamp:
-datacamp_login = function(email, password, subdomain = "www") {
-  if (subdomain == "localhost") {
+# Log in to datacamp.com, is also called before all relevant functions if user is not logged in.
+datacamp_login = function() {
+  email = readline("Email: ")
+  pw = readline("Password: ")
+  subdomain = readline("Subdomain (leave empty for default): ")
+  
+  if (subdomain == "" || subdomain == " ") {
+    base_url = paste0("https://api.datacamp.com")
+    redirect_base_url = paste0("https://teach.datacamp.com/courses")
+  } else if (subdomain == "localhost") {
     base_url = "http://localhost:3000"
+    redirect_base_url = "http://localhost:9000/courses"
   } else {
-    base_url = paste0("https://", subdomain, ".datacamp.com")
+    base_url = paste0("https://api-", subdomain, ".datacamp.com")
+    redirect_base_url = paste0("https://teach-", subdomain, ".datacamp.com/courses")
   }
-  url = paste0(base_url, "/users/details.json?email=", email, "&password=", password) 
+  
+  url = paste0(base_url, "/users/details.json?email=", email, "&password=", pw) 
   message("Logging in...")
-  if(url.exists(url)) {
+  if (url.exists(url)) {
     getURL(url)
     content = getURLContent(url)
     auth_token = fromJSON(content)$authentication_token
+    .DATACAMP_ENV <<- new.env()
     .DATACAMP_ENV$auth_token = auth_token
     .DATACAMP_ENV$email = email
     .DATACAMP_ENV$base_url = base_url
-    message(paste0("Logged in successfully to ", subdomain, ".datacamp.com with R! Make sure to log in with your browser to datacamp.com as well using the same account."))
+    .DATACAMP_ENV$redirect_base_url = redirect_base_url
+    message(paste0("Logged in successfully to datacamp.com with R! Make sure to log in with your browser to datacamp.com as well using the same account."))
   } else {
     stop("Wrong user name  or password for datacamp.com.")
   } 
 }
 
 # Create/update course:
-upload_course = function(open = TRUE) {
-  if (file.exists("course.yml")) {
-    course = yaml.load_file("course.yml")
-    the_course_json = toJSON(course)
-    upload_course_json(the_course_json)
-  } else {
-    message("Error: Seems like there is no course.yml file in the current directory.")
+upload_course = function(open = TRUE) { 
+  if (!datacamp_logged_in()) { datacamp_login() }
+  if (!file.exists("course.yml")) { return(message("Error: Seems like there is no course.yml file in the current directory.")) }
+  course = yaml.load_file("course.yml")
+  if (is.null(course$id)) {
+    sure = readline("No id found in course.yml. This will create a new course, are you sure you want to continue? (Y/N) ")
+    if (!(sure == "y" || sure == "Y" || sure == "yes" || sure == "Yes")) { return(message("Aborted.")) }
   }
+  course$chapters = lapply(course$chapters, function(x) { as.integer(x) }) # put ids in array
+  the_course_json = toJSON(course)
+  upload_course_json(the_course_json)
 }
 
 # Create/update chapter:
-upload_chapter = function( inputFile, open = TRUE, ... ) { 
-  # not efficient, needs refactoring
-  payload = suppressWarnings(slidify(inputFile, return_page = TRUE,...))  # Get the payload  
-  theJSON = render_chapter_json_for_datacamp(payload) # Get the JSON
-  upload_chapter_json(theJSON, open = open) # Upload everything
+upload_chapter = function( input_file, force = FALSE, open = TRUE, ... ) {
+  if (!datacamp_logged_in()) { datacamp_login() }
+  if (!file.exists("course.yml")) { return(message("Error: Seems like there is no course.yml file in the current directory.")) }
+  if (force == TRUE) {
+    sure = readline("Using 'force' deletes exercises. Are you sure you want to continue? (Y/N) ")
+    if (!(sure == "y" || sure == "Y" || sure == "yes" || sure == "Yes")) { return(message("Aborted.")) }
+  }
+  if (length(get_chapter_id(input_file)) == 0) {
+    sure = readline("Chapter not found in course.yml. This will create a new chapter, are you sure you want to continue? (Y/N) ")
+    if (!(sure == "y" || sure == "Y" || sure == "yes" || sure == "Yes")) { return(message("Aborted.")) }
+  }
+  payload = suppressMessages(slidify(input_file, return_page = TRUE,...))  # Get the payload  
+  theJSON = render_chapter_json_for_datacamp(input_file, payload, force) # Get the JSON
+  upload_chapter_json(theJSON, input_file, open = open) # Upload everything
 }
 
 # Upload all chapters: TODO
 upload_all_chapters = function(open = TRUE) {
+  if (!datacamp_logged_in()) { datacamp_login() }
+  if (!file.exists("course.yml")) { return(message("Error: Seems like there is no course.yml file in the current directory.")) }
+  
   chapters = list.files(pattern="*.Rmd") # list all chapters in the directory  
   if (length(chapters)==0) { stop("There seem to be no chapters (in '.Rmd' format) in the current directory") }
-
+  
   if (length(chapters) > 1) { 
     for (i in 1:length(chapters)) { 
       upload_chapter_within_course(chapters[i])
@@ -89,208 +116,17 @@ upload_all_chapters = function(open = TRUE) {
 }
 
 # Check SCT's
-check_scts = function(inputFile, outputFile, ...) { 
+check_scts = function(input_file, outputFile, ...) { 
   # not efficient, needs refactoring
-  payload = suppressWarnings(slidify(inputFile, return_page=TRUE,...))  # Get the payload  
+  payload = suppressWarnings(slidify(input_file, return_page=TRUE,...))  # Get the payload  
   slides = payload$slides
-
+  
   for (i in 1:length(slides)) {
     slide = slides[[i]]
     result = tryCatch({
-        eval(parse(text=extract_code(slide$sct$content)))
+      eval(parse(text=extract_code(slide$sct$content)))
     }, error = function(e) {
-        print(paste0("Exercise '", html2txt(slide$title), "' throws an error!"))
+      print(paste0("Exercise '", html2txt(slide$title), "' throws an error!"))
     })
   }
 }
-
-##### HELP FUNCTIONS ##### 
-upload_chapter_json = function(theJSON, open = TRUE) { 
-  if(!exists(".DATACAMP_ENV")) {
-    stop("Please login to datacamp first, using the datacamp_login function")    
-  } 
-  base_url = paste0(.DATACAMP_ENV$base_url, "/chapters/create_from_r.json")
-  redirect_url = "http://localhost:9000/edit_course/"
-  auth_token = .DATACAMP_ENV$auth_token
-  url = paste0(base_url,"?auth_token=", auth_token)
-  x = try(httr:::POST(url = url, body = theJSON, add_headers(`Content-Type` = "application/json")))
-  
-  if( class(x) != "response" ) {
-    stop("Something went wrong. We didn't get a valid response from the datacamp server. Try again or contact info@datacamp.com in case you keep experiencing this problem.")
-  } else { 
-    if(is.list(content(x)) ) { 
-      if("course" %in% names(content(x)) ) {  
-        course = content(x)$course
-        course_id = course$id
-        course_title = course$title
-        message(paste0("Course (id:",course_id,"):\n",course_title,"\nwas successfully uploaded to datacamp.com!"))
-        redirect_url = paste0(redirect_url, course_id)
-        if (open) {
-          browseURL(redirect_url)
-        } 
-      } 
-      if ("message" %in% names(content(x))) {
-        message(content(x)$message)
-      }
-      if( "error" %in% names(content(x)) ) {
-        message(paste0("Something went wrong:\n", content(x)$error ))
-      } 
-    } else {
-      message(paste0("Something went wrong. Please check whether your course was correctly uploaded to datacamp.com."))
-    } 
-  } 
-}
-
-upload_course_json = function(theJSON, open = TRUE) { 
-  if(!exists(".DATACAMP_ENV")) {
-    stop("Please login to datacamp first, using the datacamp_login function")    
-  } 
-  base_url = paste0(.DATACAMP_ENV$base_url, "/courses/create_from_r.json")
-  redirect_url = "http://localhost:9000/edit_course/"
-  auth_token = .DATACAMP_ENV$auth_token
-  url = paste0(base_url,"?auth_token=", auth_token)
-  x = httr:::POST(url=url, body = theJSON, add_headers("Content-Type" = "application/json"))
-  if( class(x) != "response" ) {
-    stop("Something went wrong. We didn't get a valid response from the datacamp server. Try again or contact info@datacamp.com in case you keep experiencing this problem.")
-  } else {
-    if(is.list(content(x)) ) {
-      if ("course" %in% names(content(x))) {
-        course_id = content(x)$id
-      }
-      if ("message" %in% names(content(x))) {
-        message(content(x)$message)
-      }
-      if( "error" %in% names(content(x)) ) {
-        message(paste0("Something went wrong:\n", content(x)$error ))
-      }
-    } else {
-      message(paste0("Something went wrong. Please check whether your course was correctly uploaded to DataCamp."))
-    }
-  }
-  redirect_url = paste0(redirect_url,course_id)
-  if (open) { browseURL(redirect_url) }
-}
-
-render_chapter_json_for_datacamp = function(payload, force) {
-  if(!exists(".DATACAMP_ENV")) {
-    stop("Please login to datacamp first, using the datacamp_login function")    
-  }
-
-  # Extract basic course and chapter info: 
-  outputList = list(force = force,
-                    course = payload$courseId,
-                    email  = .DATACAMP_ENV$email,
-                    chapter=list(
-                      id=payload$chapterId,
-                      number=payload$index,
-                      title_meta=payload$chapterTitleMeta,
-                      title=payload$chapterTitle,
-                      description=payload$description, 
-                    ) 
-  ) 
-  
-  # Extract for each exercise the relevant information:
-  slides = payload$slides 
-  exerciseList = list() 
-  for(i in 1:length(slides)) {
-    slide = slides[[i]]
-    exerciseList[[i]] = list(  title         = html2txt(slide$title),
-                               assignment    = clean_up_html(slide$content), 
-                               number        = slide$num,
-                               instructions  = clean_up_html(slide$instructions$content), 
-                               hint          = clean_up_html(slide$hint$content),
-                               sample_code   = extract_code( slide$sample_code$content ),
-                               solution      = extract_code( slide$solution$content ),
-                               sct           = extract_code( slide$sct$content), 
-                               pre_exercise_code = extract_code( slide$pre_exercise_code$content) )
-    if (!is.null(slide$type)) {  
-      exerciseList[[i]][["type"]] = slide$type
-      if (slide$type == "MultipleChoiceExercise") {
-        exerciseList[[i]][["instructions"]] = make_multiple_choice_vector(exerciseList[[i]][["instructions"]])
-        if (!is.null(slide$contains_graph)) {
-          exerciseList[[i]][["contains_graph"]] = slide$contains_graph
-        }
-      }
-    }
-  }
-  
-  # Join everything: 
-  outputList$chapter$exercises = exerciseList 
-  
-  # Make JSON: 
-  toJSON(outputList) 
-}
-
-extract_code = function(html) {
-  if(!is.null(html)) {
-  if(nchar(html)!=0) {
-  r = regexpr("<code class=\"r\">(.*?)</code>",html)
-  code = regmatches(html,r)
-  code = gsub("<code class=\"r\">|</code>","",code)
-  code = html2txt(code)
-
-  # solve bug: when quotes are within quotes, we need different type of quotes! e.g. "c('f','t','w')"
-  code = gsub("[\\]\"","'",as.character(code))
-  
-  return(code)
-  }}
-} 
-
-# Convenience function to convert html codes:
-html2txt <- function(str) {
-  str = paste0("<code>",str,"</code>")
-  xpathApply(htmlParse(str, asText=TRUE),"//body//text()", xmlValue)[[1]]
-}
-
-# Remove paragraphs:
-clean_up_html = function(html) {
-#   html = gsub("<p>|</p>","",html)
-    return(html)
-}
-
-upload_chapter_within_course = function(chapter,open = FALSE) { 
-  message(paste("Start uploading chapter: ",chapter),"...")
-  message("...uploading...")    
-  invisible( capture.output( suppressMessages(upload_chapter(chapter,open=open)) ) )
-  message(paste("Successfully uploaded chapter: ",chapter),"!")
-  message("###")
-}
-
-# Function to create an array with the multiple choice options: 
-make_multiple_choice_vector = function(instructions) { 
-  pattern = "<li>(.*?)</li>"
-  instruction_lines =  strsplit(instructions,"\n")[[1]]
-  r = regexec(pattern, instruction_lines)
-  matches = regmatches(instruction_lines,r)
-  extracted_matches = sapply(matches,function(x) x[2])
-  multiple_choice_vector = extracted_matches[!is.na(extracted_matches)]
-  
-  return(multiple_choice_vector)
-} 
-
-# FIRST implementation of checks for exercises
-# $checks stores them
-# $checks$result indicates as boolean whether everything is okay
-# $checks$complete indicates whether all sections are present, if not, reports what's missing
-# $checks$sctcorrect indicates whether runnin pre_exercise_code+solution+sct returns the expected result (true)
-
-# Check 1 exercise:
-check_exercise = function(exercise) {
-  exercise = check_exercise_completeness(exercise)
-  exercise = check_exercise_sctcorrect(exercise)
-  
-  # Everything correct?
-  exercise$checks$result = all(exercise$checks$complete, exercise$checks$sctcorrect)
-}
-
-# Check whether all obligatory sections are there (and potentially extra stuff per section)
-check_exercise_completeness = function(exercise) {
-  
-  return(exercise)
-}
-
-# Check whether the pre_exercise_code SCT 
-check_exercise_sct = function(exercise) { 
-  
-  return(exercise)  
-} 
