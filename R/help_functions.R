@@ -45,9 +45,6 @@ upload_chapter_json = function(theJSON, file_name, open = TRUE) {
 }
 
 upload_course_json = function(theJSON, open = TRUE) { 
-  if (!exists(".DATACAMP_ENV")) {
-    stop("Please login to datacamp first, using the datacamp_login function")    
-  } 
   base_url = paste0(.DATACAMP_ENV$base_url, "/courses/create_from_r.json")
   auth_token = .DATACAMP_ENV$auth_token
   url = paste0(base_url,"?auth_token=", auth_token)
@@ -104,13 +101,10 @@ add_chapter_to_course_yml = function(chapter_file_name, chapter_id) {
   chapter_index = get_chapter_id(chapter_file_name)
   if (length(chapter_index) == 0) {
     yaml_list = yaml.load_file("course.yml")
-    # Add id to the front of the list
-    if (is.null(yaml_list$chapters)) { # first chapter that's being added
-      yaml_list$chapters[[1]] = structure(list(chapter_id), names=chapter_file_name)
-    } else {
-      n = length(yaml_list$chapters)
-      yaml_list$chapters[[n+1]] = structure(list(chapter_id), names=chapter_file_name)
-    }
+    
+    n = length(yaml_list$chapters)
+    yaml_list$chapters[[n+1]] = structure(list(chapter_id), names=chapter_file_name)
+
     yaml_output = as.yaml(yaml_list,line.sep="\n")
     write(yaml_output, file="course.yml")
     message("The chapter was added to your course.yml file.")
@@ -118,11 +112,7 @@ add_chapter_to_course_yml = function(chapter_file_name, chapter_id) {
 }
 
 render_chapter_json_for_datacamp = function(file_name, payload, force) {
-  if (!exists(".DATACAMP_ENV")) {
-    stop("Please login to datacamp first, using the datacamp_login function")
-  }
-  
-  # Extract basic course and chapter info:
+  # Extract basic course info:
   course = yaml.load_file("course.yml")
   if (is.null(course$id)) {
     stop("Error: course.yml does not contain a course id. Please upload your course before uploading chapters.")
@@ -202,14 +192,6 @@ html2txt <- function(str) {
 clean_up_html = function(html) {
   #   html = gsub("<p>|</p>","",html)
   return(html)
-}
-
-upload_chapter_within_course = function(chapter,open = FALSE) { 
-  message(paste("Start uploading chapter: ",chapter),"...")
-  message("...uploading...")    
-  invisible( capture.output( suppressMessages(upload_chapter(chapter,open=open)) ) )
-  message(paste("Successfully uploaded chapter: ",chapter),"!")
-  message("###")
 }
 
 # Function to create an array with the multiple choice options: 

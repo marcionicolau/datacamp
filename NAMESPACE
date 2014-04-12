@@ -1,13 +1,1 @@
-export(author_course, 
-       preview_chapter, 
-       datacamp_login, 
-       upload_chapter,
-       upload_course,
-       check_scts); 
- 
-import(slidify);
-import(RCurl);
-import(httr);
-import(RJSONIO);
-import(XML);
-import(yaml);
+export(upload_course)
