@@ -5,22 +5,12 @@
 # Author chapter:
 author_course = function(chapdir, ...) {
   message(paste0("Creating course directory ",chapdir))
-  message("Finished creating course directory...")
+  message("Done.")
   message("Switching to course directory...")
-  message("Initializing Git Repo")
-  suppressMessages(author(deckdir = chapdir,  use_git = FALSE, scaffold = system.file('skeleton', package = 'datacamp'), ...) )
-  message(paste0("Opening first chapter..."))
-}
-
-# Preview chapter:
-preview_chapter = function(input_file, outputFile,...) {
-  payload = suppressWarnings(slidify(input_file, return_page = TRUE,...) )
-  
-  # Show the preview:
-  if (missing(outputFile)) {
-    outputFile = gsub("*.[R]?md$", '.html', input_file)
-  }
-  browseURL(outputFile)
+  message(paste0("Opening course.yml and first chapter file..."))
+  suppressMessages(author(deckdir = chapdir,  use_git = FALSE, scaffold = system.file('skeleton', package = 'datacamp'), open_rmd = FALSE, ...))
+  file.edit("course.yml")
+  file.edit("chapter1.Rmd")
 }
 
 # Log in to datacamp.com, is also called before all relevant functions if user is not logged in.
@@ -57,7 +47,16 @@ datacamp_login = function() {
   } 
 }
 
-# Create/update course:
+#' Title
+#' 
+#' Description
+#' 
+#' @param u lol
+#' 
+#' @examples
+#' \code{lolzwut}
+#' 
+#' @export
 upload_course = function(open = TRUE) { 
   if (!datacamp_logged_in()) { datacamp_login() }
   if (!file.exists("course.yml")) { return(message("Error: Seems like there is no course.yml file in the current directory.")) }
@@ -83,7 +82,7 @@ upload_chapter = function( input_file, force = FALSE, open = TRUE, ... ) {
     sure = readline("Chapter not found in course.yml. This will create a new chapter, are you sure you want to continue? (Y/N) ")
     if (!(sure == "y" || sure == "Y" || sure == "yes" || sure == "Yes")) { return(message("Aborted.")) }
   }
-  payload = suppressMessages(slidify(input_file, return_page = TRUE,...))  # Get the payload  
+  payload = suppressWarnings(slidify(input_file, return_page = TRUE,...)) # Get the payload  
   theJSON = render_chapter_json_for_datacamp(input_file, payload, force) # Get the JSON
   upload_chapter_json(theJSON, input_file, open = open) # Upload everything
 }
@@ -96,37 +95,14 @@ upload_all_chapters = function(open = TRUE) {
   chapters = list.files(pattern="*.Rmd") # list all chapters in the directory  
   if (length(chapters)==0) { stop("There seem to be no chapters (in '.Rmd' format) in the current directory") }
   
-  if (length(chapters) > 1) { 
-    for (i in 1:length(chapters)) { 
-      upload_chapter_within_course(chapters[i])
-    } 
+  if (length(chapters) > 0) { 
+    for (i in 1:length(chapters)) {
+      message(paste0("Start uploading chapter: ", chapters[i]) ," ...")
+      message("...uploading...")
+      invisible( capture.output( suppressMessages(upload_chapter(chapters[i], open = FALSE)) ) )
+      message(paste0("Successfully uploaded ", chapters[i],"!"))
+      message("###")
+    }
+    message("### Succesfully uploaded all chapters ###")
   } 
-  
-  if (!file.exists("course.yml")) { # Just upload the last chapter in case no specific course file
-    upload_chapter_within_course(chapters[length(chapters)], open = TRUE) #Upload and open the last chapter
-    message("### Succesfully upload the course ###")
-  }
-  
-  if (file.exists("course.yml")) {
-    upload_chapter_within_course(chapters[length(chapters)], open = FALSE) # Upload the last chapter
-    course = yaml.load_file("course.yml")
-    the_course_json = toJSON(course)
-    upload_course_json(the_course_json)
-  }
-}
-
-# Check SCT's
-check_scts = function(input_file, outputFile, ...) { 
-  # not efficient, needs refactoring
-  payload = suppressWarnings(slidify(input_file, return_page=TRUE,...))  # Get the payload  
-  slides = payload$slides
-  
-  for (i in 1:length(slides)) {
-    slide = slides[[i]]
-    result = tryCatch({
-      eval(parse(text=extract_code(slide$sct$content)))
-    }, error = function(e) {
-      print(paste0("Exercise '", html2txt(slide$title), "' throws an error!"))
-    })
-  }
 }
