@@ -2,18 +2,39 @@
 # Extra functionality will be gradually added. 
 # Feel free to contribute or just email suggestions at info@datacamp.com! 
 
-# Author chapter:
-author_course = function(chapdir, ...) {
-  message(paste0("Creating course directory ",chapdir))
+#' Generate course and chapter scaffold
+#'
+#' The \code{author_course} function will:
+#' \enumerate{
+#'  \item create a folder in you current working directory with the name "course_name"
+#'  \item create and open a `course.yml` file, a scaffold to create your course
+#'  \item create and open a `chapter1.Rmd` file, a scaffold for creating your first chapter
+#' }
+#' The generated template contains extra instructions on the building blocks of chapters.
+#' 
+#' @usage author_course(course_name, ...)
+#' @param course_name String indicating the course name (and thus the name of the folder that will be created)
+#' @param ... Extra arguments you'd like to pass to the function. Under the hood, the \code{author} function from the \code{slidify} package is called.
+#' @return No return values.
+#' @examples author_course("myNewTutorialName")
+author_course = function(course_name, ...) {
+  message(paste0("Creating course directory ",course_name))
   message("Done.")
   message("Switching to course directory...")
   message(paste0("Opening course.yml and first chapter file..."))
-  suppressMessages(author(deckdir = chapdir,  use_git = FALSE, scaffold = system.file('skeleton', package = 'datacamp'), open_rmd = FALSE, ...))
+  suppressMessages(author(deckdir = course_name,  use_git = FALSE, scaffold = system.file('skeleton', package = 'datacamp'), open_rmd = FALSE, ...))
   file.edit("course.yml")
   file.edit("chapter1.Rmd")
 }
 
-# Log in to datacamp.com, is also called before all relevant functions if user is not logged in.
+#' Log in to datacamp.com
+#' 
+#' Used to log in to datacamp.com. The function will prompt for your username and password and log you in to the datacamp server.
+#' Optionally a subdomain can be specified (the default is www.datacamp.com).
+#' Note that you must also log into datacamp.com with your browser.
+#' 
+#' @usage datacamp_login()
+#' @return No return values.
 datacamp_login = function() {
   email = readline("Email: ")
   pw = readline("Password: ")
@@ -47,16 +68,15 @@ datacamp_login = function() {
   } 
 }
 
-#' Title
+#' Create or update a course
 #' 
-#' Description
+#' Uploads the \code{course.yml} file to datacamp.com. Use this function to change the course title, description, etc. and to update the chapters' ordering.
 #' 
-#' @param u lol
+#' If you're not yet logged in when calling this function, you'll be prompted to log in.
 #' 
-#' @examples
-#' \code{lolzwut}
-#' 
-#' @export
+#' @usage upload_course(open = TRUE)
+#' @param open boolean, TRUE by default, determines whether a browser window should open, showing the course creation web interface
+#' @examples upload_course() 
 upload_course = function(open = TRUE) { 
   if (!datacamp_logged_in()) { datacamp_login() }
   if (!file.exists("course.yml")) { return(message("Error: Seems like there is no course.yml file in the current directory.")) }
@@ -70,8 +90,21 @@ upload_course = function(open = TRUE) {
   upload_course_json(the_course_json)
 }
 
-# Create/update chapter:
-upload_chapter = function( input_file, force = FALSE, open = TRUE, ... ) {
+#' Create or update a chapter
+#' 
+#' @usage upload_chapter(input_file, force = FALSE, open = TRUE, ...)
+#' @param input_file Path to the ".Rmd" file to be uploaded
+#' @param force boolean, FALSE by default, specifies whether exercises should be removed. If set, will prompt for confirmation.
+#' @param open boolean, TRUE by default, determines whether a browser window should open, showing the course creation web interface
+#' @param ... Extra arguments to be passed to the \code{slidify} function under the hood
+#' @return No return values.
+#' @examples
+#' # Upload without possibly deleting existing exercises
+#' upload_chapter("chapter1.Rmd")
+#' 
+#' # Completely sync markdown chapter with online version
+#' upload_chapter("chapter1.Rmd", force = TRUE)
+upload_chapter = function(input_file, force = FALSE, open = TRUE, ... ) {
   if (!datacamp_logged_in()) { datacamp_login() }
   if (!file.exists("course.yml")) { return(message("Error: Seems like there is no course.yml file in the current directory.")) }
   if (force == TRUE) {
@@ -87,8 +120,14 @@ upload_chapter = function( input_file, force = FALSE, open = TRUE, ... ) {
   upload_chapter_json(theJSON, input_file, open = open) # Upload everything
 }
 
-# Upload all chapters: TODO
-upload_all_chapters = function(open = TRUE) {
+#' Upload all chapters
+#' 
+#' Loop over all \code{.Rmd} files in the course directory and upload them using the \code{upload_chapter()} function.
+#' 
+#' @usage upload_all_chapters()
+#' @return No return values.
+#' @examples upload_all_chapters()
+upload_all_chapters = function() {
   if (!datacamp_logged_in()) { datacamp_login() }
   if (!file.exists("course.yml")) { return(message("Error: Seems like there is no course.yml file in the current directory.")) }
   

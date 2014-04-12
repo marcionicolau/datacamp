@@ -73,7 +73,7 @@ description: A first course
 ```
 
 ###Uploading chapters to datacamp.com
-   ```Rmd
+   ```yml
 # chapter1.Rmd scaffold
 --- 
 title       : Insert the chapter title here
@@ -114,4 +114,4 @@ A course is just a collection of chapters, and a chapter is essentially just a s
 
 
 ## Submission Correctness Tests
-The key ingredient to an interactive course is the Submission Correctness Test (SCT). For all information regarding SCTs, please refer to the [datacampSCT](https://github.com/Data-Camp/datacampSCT) package.
+The key ingredient to an interactive course is the Submission Correctness Test (SCT). For all information regarding SCTs, please refer to the [datacampSCT package](https://github.com/Data-Camp/datacampSCT).
