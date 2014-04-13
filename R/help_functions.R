@@ -7,11 +7,18 @@ datacamp_logged_in = function() {
   }
 }
 
+#' @import RCurl
+#' @import httr
+#' @import RJSONIO  
+#' @import XML 
+#' @import yaml
+#' @import datacampSCT
+#' @import slidify
 upload_chapter_json = function(theJSON, file_name, open = TRUE) {
   base_url = paste0(.DATACAMP_ENV$base_url, "/chapters/create_from_r.json")
   auth_token = .DATACAMP_ENV$auth_token
   url = paste0(base_url,"?auth_token=", auth_token)
-  x = try(httr:::POST(url = url, body = theJSON, add_headers(c(`Content-Type` = "application/json", `Expect` = ""))))
+  x = try(POST(url = url, body = theJSON, add_headers(c(`Content-Type` = "application/json", `Expect` = ""))))
   
   if ( class(x) != "response" ) {
     stop("Something went wrong. We didn't get a valid response from the datacamp server. Try again or contact info@datacamp.com in case you keep experiencing this problem.")
@@ -48,7 +55,7 @@ upload_course_json = function(theJSON, open = TRUE) {
   base_url = paste0(.DATACAMP_ENV$base_url, "/courses/create_from_r.json")
   auth_token = .DATACAMP_ENV$auth_token
   url = paste0(base_url,"?auth_token=", auth_token)
-  x = try(httr:::POST(url = url, body = theJSON, add_headers(c(`Content-Type` = "application/json", `Expect` = ""))))
+  x = try(POST(url = url, body = theJSON, add_headers(c(`Content-Type` = "application/json", `Expect` = ""))))
   if ( class(x) != "response" ) {
     stop("Something went wrong. We didn't get a valid response from the datacamp server. Try again or contact info@datacamp.com in case you keep experiencing this problem.")
   } else {

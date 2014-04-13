@@ -19,6 +19,8 @@ If you're not yet logged in when calling this function,
 you'll be prompted to log in.
 }
 \examples{
+\dontrun{
 upload_course()
+}
 }
 

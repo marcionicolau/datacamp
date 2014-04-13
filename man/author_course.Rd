@@ -6,7 +6,8 @@ author_course(course_name, ...)
 }
 \arguments{
   \item{course_name}{String indicating the course name (and
-  thus the name of the folder that will be created)}
+  thus the name of the folder that will be created in your
+  current working directory).}
 
   \item{...}{Extra arguments you'd like to pass to the
   function. Under the hood, the \code{author} function from
@@ -18,13 +19,22 @@ No return values.
 \description{
 The \code{author_course} function will: \enumerate{ \item
 create a folder in you current working directory with the
-name "course_name" \item create and open a `course.yml`
-file, a scaffold to create your course \item create and
-open a `chapter1.Rmd` file, a scaffold for creating your
-first chapter } The generated template contains extra
-instructions on the building blocks of chapters.
+name "course_name".  \item create and open a `course.yml`
+file, a scaffold to provide the necessary course
+information.  \item create and open a `chapter1.Rmd` file,
+a scaffold for creating your first chapter. }
+}
+\details{
+In the `course.yml` file a course title, course author and
+course description should be provided. Next, it also
+contains the unique course ID, and a list of the chapters
+within the course. The `chapter1.Rmd` file provides the
+structure and building blocks of the first chapter.
 }
 \examples{
+\dontrun{
+# This will create the new directory ../myNewTutorialName in your current working directory
 author_course("myNewTutorialName")
+}
 }
 

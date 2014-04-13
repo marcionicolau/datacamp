@@ -12,6 +12,8 @@ Loop over all \code{.Rmd} files in the course directory and
 upload them using the \code{upload_chapter()} function.
 }
 \examples{
+\dontrun{
 upload_all_chapters()
+}
 }
 

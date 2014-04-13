@@ -1,6 +1,6 @@
 \name{datacamp_login}
 \alias{datacamp_login}
-\title{Log in to datacamp.com}
+\title{Log in to DataCamp.com via R}
 \usage{
 datacamp_login()
 }
@@ -8,10 +8,13 @@ datacamp_login()
 No return values.
 }
 \description{
-Used to log in to datacamp.com. The function will prompt
-for your username and password and log you in to the
-datacamp server. Optionally a subdomain can be specified
-(the default is www.datacamp.com). Note that you must also
-log into datacamp.com with your browser.
+To be able to upload your course to the DataCamp platform,
+you need to log in to set-up the connection. The function
+will prompt for your DataCamp username and password, and
+will then log you into the DataCamp server. Optionally, a
+subdomain can be specified (the default is
+www.DataCamp.com). Note, in addition to the log in via R,
+it is also necessary to log into DataCamp.com via your
+browser.
 }
 
