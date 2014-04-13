@@ -19,9 +19,12 @@
 #' @param course_name String indicating the course name (and thus the name of the folder that will be created in your current working directory).
 #' @param ... Extra arguments you'd like to pass to the function. Under the hood, the \code{author} function from the \code{slidify} package is called.
 #' @return No return values.
-#' @examples 
+#' @examples
+#' \dontrun{
 #' # This will create the new directory ../myNewTutorialName in your current working directory 
 #' author_course("myNewTutorialName")
+#' }
+#' @export
 author_course = function(course_name, ...) {
   message(paste0("Creating course directory ",course_name))
   message("Done.")
@@ -40,6 +43,7 @@ author_course = function(course_name, ...) {
 #' 
 #' @usage datacamp_login()
 #' @return No return values.
+#' @export
 datacamp_login = function() {
   email = readline("Email: ")
   pw = readline("Password: ")
@@ -81,7 +85,11 @@ datacamp_login = function() {
 #' 
 #' @usage upload_course(open = TRUE)
 #' @param open boolean, TRUE by default, determines whether a browser window should open, showing the course creation web interface
-#' @examples upload_course() 
+#' @examples 
+#' \dontrun{
+#' upload_course() 
+#' }
+#' @export
 upload_course = function(open = TRUE) { 
   if (!datacamp_logged_in()) { datacamp_login() }
   if (!file.exists("course.yml")) { return(message("Error: Seems like there is no course.yml file in the current directory.")) }
@@ -104,11 +112,14 @@ upload_course = function(open = TRUE) {
 #' @param ... Extra arguments to be passed to the \code{slidify} function under the hood
 #' @return No return values.
 #' @examples
+#' \dontrun{
 #' # Upload without possibly deleting existing exercises
 #' upload_chapter("chapter1.Rmd")
 #' 
 #' # Completely sync markdown chapter with online version
 #' upload_chapter("chapter1.Rmd", force = TRUE)
+#' }
+#' @export
 upload_chapter = function(input_file, force = FALSE, open = TRUE, ... ) {
   if (!datacamp_logged_in()) { datacamp_login() }
   if (!file.exists("course.yml")) { return(message("Error: Seems like there is no course.yml file in the current directory.")) }
@@ -131,7 +142,11 @@ upload_chapter = function(input_file, force = FALSE, open = TRUE, ... ) {
 #' 
 #' @usage upload_all_chapters()
 #' @return No return values.
-#' @examples upload_all_chapters()
+#' @examples 
+#' \dontrun{
+#' upload_all_chapters()
+#' }
+#' @export
 upload_all_chapters = function() {
   if (!datacamp_logged_in()) { datacamp_login() }
   if (!file.exists("course.yml")) { return(message("Error: Seems like there is no course.yml file in the current directory.")) }

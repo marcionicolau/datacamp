@@ -25,10 +25,12 @@ No return values.
 Create or update a chapter
 }
 \examples{
+\dontrun{
 # Upload without possibly deleting existing exercises
 upload_chapter("chapter1.Rmd")
 
 # Completely sync markdown chapter with online version
 upload_chapter("chapter1.Rmd", force = TRUE)
+}
 }
 
