@@ -102,7 +102,6 @@ As you can see, the file contains a list of chapters with a mapping of their fil
 # course.yml
 ...
 chapters:
-chapters:
   - chapter2.Rmd: 760
   - chapter1.Rmd: 753
 ```
