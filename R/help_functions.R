@@ -7,10 +7,9 @@ datacamp_logged_in = function() {
   }
 }
 
-#' @import RCurl
+
 #' @import httr
 #' @import RJSONIO  
-#' @import XML 
 #' @import yaml
 #' @import datacampSCT
 #' @import slidify
