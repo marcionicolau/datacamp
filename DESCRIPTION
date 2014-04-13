@@ -13,8 +13,6 @@ Description: This package makes it easy and fun to create interactive courses
 License: MIT
 URL: www.datacamp.com
 Imports:
-    datacampSCT,
-    slidify,
     httr,
     RJSONIO,
     yaml

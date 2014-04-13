@@ -26,6 +26,7 @@
 #' }
 #' @export
 author_course = function(course_name, ...) {
+  require("slidify")
   message(paste0("Creating course directory ",course_name))
   message("Done.")
   message("Switching to course directory...")
@@ -91,6 +92,7 @@ datacamp_login = function() {
 #' }
 #' @export
 upload_course = function(open = TRUE) { 
+  require("slidify")
   if (!datacamp_logged_in()) { datacamp_login() }
   if (!file.exists("course.yml")) { return(message("Error: Seems like there is no course.yml file in the current directory.")) }
   course = yaml.load_file("course.yml")
@@ -121,6 +123,7 @@ upload_course = function(open = TRUE) {
 #' }
 #' @export
 upload_chapter = function(input_file, force = FALSE, open = TRUE, ... ) {
+  require("slidify")
   if (!datacamp_logged_in()) { datacamp_login() }
   if (!file.exists("course.yml")) { return(message("Error: Seems like there is no course.yml file in the current directory.")) }
   if (force == TRUE) {
@@ -148,6 +151,7 @@ upload_chapter = function(input_file, force = FALSE, open = TRUE, ... ) {
 #' }
 #' @export
 upload_all_chapters = function() {
+  require("slidify")
   if (!datacamp_logged_in()) { datacamp_login() }
   if (!file.exists("course.yml")) { return(message("Error: Seems like there is no course.yml file in the current directory.")) }
   
