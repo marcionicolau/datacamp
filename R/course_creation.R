@@ -6,32 +6,37 @@
 #'
 #' The \code{author_course} function will:
 #' \enumerate{
-#'  \item create a folder in you current working directory with the name "course_name"
-#'  \item create and open a `course.yml` file, a scaffold to create your course
-#'  \item create and open a `chapter1.Rmd` file, a scaffold for creating your first chapter
+#'  \item create a folder in you current working directory with the name "course_name".
+#'  \item create and open a `course.yml` file, a scaffold to provide the necessary course information.
+#'  \item create and open a `chapter1.Rmd` file, a scaffold for creating your first chapter.
 #' }
-#' The generated template contains extra instructions on the building blocks of chapters.
+#' 
+#' In the `course.yml` file a course title, course author and course description should be provided. Next, it also contains the unique 
+#' course ID, and a list of the chapters within the course. The `chapter1.Rmd` file provides the structure and building blocks of the 
+#' first chapter.    
 #' 
 #' @usage author_course(course_name, ...)
-#' @param course_name String indicating the course name (and thus the name of the folder that will be created)
+#' @param course_name String indicating the course name (and thus the name of the folder that will be created in your current working directory).
 #' @param ... Extra arguments you'd like to pass to the function. Under the hood, the \code{author} function from the \code{slidify} package is called.
 #' @return No return values.
-#' @examples author_course("myNewTutorialName")
+#' @examples 
+#' # This will create the new directory ../myNewTutorialName in your current working directory 
+#' author_course("myNewTutorialName")
 author_course = function(course_name, ...) {
   message(paste0("Creating course directory ",course_name))
   message("Done.")
   message("Switching to course directory...")
   message(paste0("Opening course.yml and first chapter file..."))
-  suppressMessages(author(deckdir = course_name,  use_git = FALSE, scaffold = system.file('skeleton', package = 'datacamp'), open_rmd = FALSE, ...))
   file.edit("course.yml")
   file.edit("chapter1.Rmd")
 }
 
-#' Log in to datacamp.com
+#' Log in to DataCamp.com via R
 #' 
-#' Used to log in to datacamp.com. The function will prompt for your username and password and log you in to the datacamp server.
-#' Optionally a subdomain can be specified (the default is www.datacamp.com).
-#' Note that you must also log into datacamp.com with your browser.
+#' To be able to upload your course to the DataCamp platform, you need to log in to set-up the connection. The function will prompt for your
+#' DataCamp username and password, and will then log you into the DataCamp server. Optionally, a subdomain can be specified (the default is 
+#' www.DataCamp.com). Note, in addition to the log in via R, it is also necessary to log into DataCamp.com via your browser.
+#' 
 #' 
 #' @usage datacamp_login()
 #' @return No return values.
