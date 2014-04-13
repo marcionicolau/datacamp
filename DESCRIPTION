@@ -15,8 +15,6 @@ URL: www.datacamp.com
 Depends:
     datacampSCT,
     slidify,
-    RCurl,
     httr,
     RJSONIO,
-    XML,
     yaml
