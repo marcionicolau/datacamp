@@ -34,7 +34,7 @@ author_course("course_name")
 ```
 The `author_course` function will:
   1. create a folder in you current working directory with the name "course_name"
-  2. create and open a `course.yml` file, a scaffold to create your course
+  2. create a `course.yml` file, a scaffold to create your course
   3. create and open a `chapter1.Rmd` file, a scaffold for creating your first chapter
 The generated template contains extra instructions on the building blocks of chapters. We strongly advise you to put your folder under git source control at this point.
 
