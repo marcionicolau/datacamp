@@ -1,3 +1,9 @@
+#' @import httr
+#' @import RJSONIO  
+#' @import yaml
+#' @import XML
+#' @import RCurl
+#' 
 ##### HELP FUNCTIONS ##### 
 datacamp_logged_in = function() {
   if (exists(".DATACAMP_ENV")) {
@@ -7,11 +13,6 @@ datacamp_logged_in = function() {
   }
 }
 
-
-#' @import httr
-#' @import RJSONIO  
-#' @import yaml
-#' @import XML
 upload_chapter_json = function(theJSON, file_name, open = TRUE) {
   base_url = paste0(.DATACAMP_ENV$base_url, "/chapters/create_from_r.json")
   auth_token = .DATACAMP_ENV$auth_token
