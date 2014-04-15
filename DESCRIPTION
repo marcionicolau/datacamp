@@ -15,4 +15,6 @@ URL: www.datacamp.com
 Imports:
     httr,
     RJSONIO,
-    yaml
+    yaml,
+    XML,
+    RCurl
