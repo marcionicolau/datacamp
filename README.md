@@ -74,6 +74,7 @@ description: A first course
 ```
 
 ###Uploading chapters to datacamp.com
+Every chapter is described in its corresponding `chapterX.Rmd` file. The first time you create a chapter, it's a good idea to start from the `chapter1.Rmd` template that was generated using `author_course("course_name")`. This template contains information about the markup language, different types of exercises, etc.
    ```yml
 # chapter1.Rmd scaffold
 --- 
