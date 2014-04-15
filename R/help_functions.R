@@ -12,6 +12,7 @@ datacamp_logged_in = function() {
 #' @import RJSONIO  
 #' @import yaml
 #' @import XML
+#' @import RCurl
 upload_chapter_json = function(theJSON, file_name, open = TRUE) {
   base_url = paste0(.DATACAMP_ENV$base_url, "/chapters/create_from_r.json")
   auth_token = .DATACAMP_ENV$auth_token
@@ -189,7 +190,6 @@ extract_code = function(html) {
 
 # Convenience function to convert html codes:
 html2txt <- function(str) {
-  require("XML")
   str = paste0("<code>",str,"</code>")
   xpathApply(htmlParse(str, asText=TRUE),"//body//text()", xmlValue)[[1]]
 }
