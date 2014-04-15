@@ -20,7 +20,7 @@
 #' @param ... Extra arguments you'd like to pass to the function. Under the hood, the \code{author} function from the \code{slidify} package is called.
 #' @return No return values.
 #' @examples
-#' \dontrun{
+#' \dontrun{ 
 #' # This will create the new directory ../myNewTutorialName in your current working directory 
 #' author_course("myNewTutorialName")
 #' }
