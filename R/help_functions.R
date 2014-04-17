@@ -1,5 +1,5 @@
 #' @import httr
-#' @import RJSONIO  
+#' @import jsonlite 
 #' @import yaml
 #' @import XML
 #' @import RCurl
