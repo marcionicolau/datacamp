@@ -24,6 +24,7 @@ library("devtools")
 install_github("datacampSCT", "data-camp")
 install_github("datacamp", "data-camp")
 install_github("slidify", "ramnathv", ref = "dev")
+install_github("slidifyLibraries", "ramnathv")
 library("datacamp")
 ```
 The code above will download and install the datacamp R package. Alternatively, you can also download the source code above.

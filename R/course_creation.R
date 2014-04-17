@@ -63,9 +63,9 @@ datacamp_login = function() {
   
   url = paste0(base_url, "/users/details.json?email=", email, "&password=", pw) 
   message("Logging in...")
-  if (url.exists(url)) {
-    getURL(url)
-    content = getURLContent(url)
+  if (url.exists(url, ssl.verifypeer=FALSE)) {
+    getURL(url, ssl.verifypeer=FALSE)
+    content = getURLContent(url, ssl.verifypeer=FALSE)
     auth_token = fromJSON(content)$authentication_token
     .DATACAMP_ENV <<- new.env()
     .DATACAMP_ENV$auth_token = auth_token
@@ -124,6 +124,7 @@ upload_course = function(open = TRUE) {
 #' @export
 upload_chapter = function(input_file, force = FALSE, open = TRUE, ... ) {
   require("slidify")
+  if (!hasArg(input_file)) { return(message("Error: You need to specify a chapter Rmd file.")) }
   if (!datacamp_logged_in()) { datacamp_login() }
   if (!file.exists("course.yml")) { return(message("Error: Seems like there is no course.yml file in the current directory.")) }
   if (force == TRUE) {

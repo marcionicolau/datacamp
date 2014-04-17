@@ -14,7 +14,7 @@ License: MIT
 URL: www.datacamp.com
 Imports:
     httr,
-    RJSONIO,
+    jsonlite,
     yaml,
     XML,
     RCurl
