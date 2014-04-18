@@ -52,7 +52,10 @@ author_chapter = function(chapter_name=NULL) {
   if (is.null(chapter_name)) { 
     stop("Please provide a chapter name.") 
   } 
-  to_file_path = paste(chapter_name, ".Rmd",sep="")
+  if (!is_rmd(chapter_name)) {
+    to_file_path = paste(chapter_name, ".Rmd",sep="")
+  } else { to_file_path = chapter_name }
+  
   from_file_path = paste(system.file('skeleton', package = 'datacamp'), "/chapter1.Rmd", sep="")
   file.copy(from_file_path, to_file_path)
   message(paste("Creating chapter: ", to_file_path, ".", sep = ""))

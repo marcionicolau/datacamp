@@ -304,3 +304,9 @@ check_chapters = function(course) {
 # Documentation path
 doc_url = function() { return("http://github.com/Data-Camp/datacamp") }
 
+# rmd checker
+is_rmd = function(text) {
+  ex = substr(text, nchar(text)-3, nchar(text))
+  is_rmd = (ex == ".Rmd") || (ex == ".RMD") || (ex == ".rmd") || (ex == ".RMd")  
+  return(is_rmd)
+}
