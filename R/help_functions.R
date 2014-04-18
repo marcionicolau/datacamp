@@ -84,7 +84,7 @@ upload_course_json = function(theJSON, open = TRUE) {
 }
 
 add_id_to_course_yml = function(course_id) {
-  yaml_list = yaml.load_file("course.yml")
+  yaml_list = load_course_yaml()
   if (is.null(yaml_list$id)) {
     # Add id to the front of the list. As.integer because could be num:
     yaml_list = append(yaml_list, list(id = as.integer(course_id)), after = 0)
@@ -98,7 +98,7 @@ add_id_to_course_yml = function(course_id) {
 }
 
 get_chapter_id = function(file_name) {
-  course = yaml.load_file("course.yml")
+  course = load_course_yaml()
   chapter_index = which(sapply(course$chapters, function(x) {names(x)}) == file_name)
   return(as.integer(chapter_index))
 }
@@ -106,7 +106,7 @@ get_chapter_id = function(file_name) {
 add_chapter_to_course_yml = function(chapter_file_name, chapter_id) {
   chapter_index = get_chapter_id(chapter_file_name)
   if (length(chapter_index) == 0) {
-    yaml_list = yaml.load_file("course.yml")
+    yaml_list = load_course_yaml()
     
     n = length(yaml_list$chapters)
     yaml_list$chapters[[n+1]] = structure(list(chapter_id), names=chapter_file_name)
@@ -119,7 +119,7 @@ add_chapter_to_course_yml = function(chapter_file_name, chapter_id) {
 
 render_chapter_json_for_datacamp = function(file_name, payload, force) {
   # Extract basic course info:
-  course = yaml.load_file("course.yml")
+  course = load_course_yaml()
   if (is.null(course$id)) {
     stop("Error: course.yml does not contain a course id. Please upload your course before uploading chapters.")
   }
@@ -134,7 +134,7 @@ render_chapter_json_for_datacamp = function(file_name, payload, force) {
   )
   
   # Extract chapter id and index from course.yml. If found, add to outputList
-  course = yaml.load_file("course.yml")
+  course = load_course_yaml()
   chapter_index = get_chapter_id(file_name)
   if (length(chapter_index) != 0) { # existing chapter, add info to output_list
     output_list$chapter$id = as.integer(course$chapters[[chapter_index]])
@@ -211,3 +211,55 @@ make_multiple_choice_vector = function(instructions) {
   
   return(multiple_choice_vector)
 }
+
+# Load yaml:
+load_course_yaml = function() { 
+  # Step 1: Load the yaml file such that we have a list with all course information:
+  if (!file.exists("course.yml")) { 
+    stop("Seems like there is no course.yml file in the current directory.")) 
+  }
+  course = try(yaml.load_file("course.yml"))
+  if (inherits(course,"try-error")) {
+    stop(paste("There's a problem loading your course.yml file. Please check the documentation to find out what the course.yml file should contain. Go to:",doc_url()))
+  }
+
+  # Step 2: Check the course yaml object on inconsistencies. 
+  # This is necessary since the rest of the code assumes a certain structure. 
+  # Everything should be clean before it's uploaded to the back-end or further processed in R.
+  check_course_object(course)
+
+  # Only relevant when uploading (TODO?)
+  if (is.null(course$id)) {
+    sure = readline("No id found in course.yml. This will create a new course, are you sure you want to continue? (Y/N) ")
+    if (!(sure == "y" || sure == "Y" || sure == "yes" || sure == "Yes")) { return(message("Aborted.")) }
+  }
+
+  return(course)
+}
+
+# Check the course yaml object
+check_course_object = function(course) {
+  # All basic info present in yaml?
+  min_names = c("title", "author_field", "description")
+  present_names = min_names %in% names(course)
+  if (!all(present_names)) {
+    stop(paste("Looks like your course.yml file is missing the information:", 
+               paste(min_names[!present_names], collapse=" and "), 
+               "\nHave a look at the documentation on:", doc_url(),"."))
+  }
+  # Any empty elements
+  min_course = course[min_names[present_names]]
+  empty = sapply(min_course, function(x){
+   is.null(x) || (x == "") || (x == " ") || is.na(x)
+  })
+  if (any(empty)) {
+    stop(paste("Looks like your course.yml file is missing information for the field(s): ", 
+               paste(names(min_course[empty]), collapse=" and "), 
+               ".\nThese cannot be empty. Please add that in your course.yml file.\nHave a look at the documentation on: ", doc_url(),".",sep=""))
+  }
+  
+}
+
+# Documentation path
+doc_url = function() { return("http://github.com/Data-Camp/datacamp") }
+
