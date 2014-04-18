@@ -66,7 +66,7 @@ author_field: The author(s) name(s)
 description: Insert course description here
 ```
 Change the fields and call the function `upload_course()`. This will create your course and add its id to the `course.yml` file. This way your local course is linked to the one on datacamp.com.
-   ```yml
+```yml
 # course.yml after creation on server
 id: 314
 title: Hello world
@@ -76,9 +76,10 @@ description: A first course
 
 ###Uploading chapters to datacamp.com
 Every chapter is described in its corresponding `chapterX.Rmd` file. The first time you create a chapter, it's a good idea to start from the `chapter1.Rmd` template that was generated using `author_course("course_name")`. This template contains information about the markup language, different types of exercises, etc.
-   ```yml
+```yml
 # chapter1.Rmd scaffold
 --- 
+title_meta  : Insert chapter preposition here
 title       : Insert the chapter title here
 description : What is this chapter about? Add here your description
 framework   : datacamp
