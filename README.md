@@ -58,8 +58,8 @@ datacamp_login()
 This will prompt you for your username and password and log you in to the datacamp server. Note that you must also log into datacamp.com with your browser.
 
 ###The `course.yml` file
-This file contains information about your course and the structure of its chapters. After `author_course()`, you get the following scaffold:
-   ```yml
+This file contains information about your course and the structure of its chapters. After running `author_course()`, a `course.yml` file is created in your course directory. This `course.yml` file has the following scaffold:
+```yml
 # course.yml scaffold
 title: Insert the course title here
 author_field: The author(s) name(s)
@@ -109,11 +109,109 @@ chapters:
 ```
 Any changes to this list requires the course to be uploaded with `upload_course()` for changes to take effect.
 
-You can also upload all chapters at once with `upload_all_chapters()`.
-
 ###Share the love
 A course is just a collection of chapters, and a chapter is essentially just a simple R markdown document. Therefore, you can easily collaborate with others on a course. For example, by sharing the [R markdown documents](https://github.com/data-camp/introduction_to_R) on github. We believe this "open-course" type of collaboration for interactive R and statistics courses will benefit everyone. Check out the open-source repo of our Introduction to R course and help us improve it.
 
 
 ## Submission Correctness Tests
 The key ingredient to an interactive course is the Submission Correctness Test (SCT). For all information regarding SCTs, please refer to the [datacampSCT package](https://github.com/Data-Camp/datacampSCT).
+
+##Most frequently asked questions
+
+#####How can I create a new chapter?
+First, make sure the current working directory matches with the course directory you want to create a chapter for. Next, add a new chapter to the course with the help of the `new_chapter("name_chapter")` function. This will create and open an R Markdown file named `name_chapter.Rmd`.  
+```
+# Make sure to set the correct working directory
+setwd("/Users/course_name")
+
+# Add a new chapter "R for dummies". This will open an R Markdown file.
+new_chapter("R_for_dummies")
+```
+#####My chapter is finished, how do I upload it to the DataCamp platform?
+If you already placed your course on the online DataCamp platform, you can upload a new or existing chapter via the function `upload_chapter("name_chapter")`. If your course is not yet on the online DataCamp platform, you first need to run the command `upload_course()`.
+```
+# Upload the chapter "R for dummies"
+`upload_chapter("R_for_dummies")`
+```
+#####I want to remove a chapter in my course. Can I do this?
+Yes you can! To remove chapters out of a course, you need to go to your `course.yml` file. Here you see a list of all the chapters included in your course(in this case two), with their chapter ID: 
+```
+# e.g. course.yml
+id: 314
+title: Hello world
+author_field: Your name
+description: A first course
+chapters:
+  - chapter1.Rmd: 753
+  - chapter2.Rmd: 760
+```
+To remove a chapter out of a course, you just need to remove the corresponding chapter name and ID in the Yaml file. So suppose you want to remove `chapter1.Rmd` from the course, your Yaml file needs to look like this:
+```
+# e.g. course.yml
+id: 314
+title: Hello world
+author_field: Your name
+description: A first course
+chapters:
+  - chapter2.Rmd: 760
+```
+To make these changes visible on the DataCamp platform, you need to re-upload the course via `upload_course()`.
+
+<i>Note: Removing the first chapter from the Yaml file, does not remove the R Markdown file `chapter1.Rmd` in your course map. So chapter content will not get lost, and you can always re-add the chapter in a later phase.  
+##### How can I add exercises to a chapter?  
+Adding exercises to a chapter is easy. In every R Markdown file of a chapter, the start of a new exercise is indicated by `---`, followed by the different components of an exercise: `## Exercise Title`, `*** =instructions`, `*** =hint`, `*** =pre_exercise_code`, `*** =solution`, `*** =sample_code`, and `*** =sct`. 
+
+You have an R Markdown with the following exercise (for clarity, only the components `## Exercise Title` and `*** =sct` are displayed):
+```
+## First Exercise
+.
+.
+.  
+*** =sct
+```
+Now you want to add a second exercise. You simply do this by adding the `---` sign after the `*** =sct` component of the first exercise:
+```
+## First Exercise
+.
+.
+.
+.
+*** =sct
+
+# AFTER SCT OF EXERCISE ONE, PLACE THE `---` SIGN TO INDICATE START EXERCISE TWO:
+---
+## Second Exercise
+.
+.
+.
+.
+*** =sct
+```
+##### I need to delete one of the exercises in my chapter. How can I do this?
+To delete an exercise from a chapter, you need to delete all the related components of this exercise. The following R Markdown has two exercises and you would like to delete the second one: 
+```
+## First Exercise
+.
+.
+.
+.
+*** =sct
+---
+## Second Exercise
+.
+.
+.
+.
+*** =sct
+```
+Now just delete all components of the second exercise. Make sure to delete the `---` sign that indicated the start of the second exercise: 
+```
+## First Exercise
+.
+.
+.
+.
+*** =sct
+```
+
+###### If you still didn't find the answer you were looking for, just send an e-mail to <b>info@datacamp.com</b>.  
