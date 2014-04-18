@@ -109,8 +109,6 @@ chapters:
 ```
 Any changes to this list requires the course to be uploaded with `upload_course()` for changes to take effect.
 
-You can also upload all chapters at once with `upload_all_chapters()`.
-
 ###Share the love
 A course is just a collection of chapters, and a chapter is essentially just a simple R markdown document. Therefore, you can easily collaborate with others on a course. For example, by sharing the [R markdown documents](https://github.com/data-camp/introduction_to_R) on github. We believe this "open-course" type of collaboration for interactive R and statistics courses will benefit everyone. Check out the open-source repo of our Introduction to R course and help us improve it.
 
