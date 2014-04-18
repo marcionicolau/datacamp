@@ -129,6 +129,7 @@ upload_course = function(open = TRUE, force = FALSE) {
   if (force == TRUE) {
     sure = readline("Using 'force' will delete chapters online that are not specified in your course.yml. Are you sure you want to continue? (Y/N) ")
     if (!(sure == "y" || sure == "Y" || sure == "yes" || sure == "Yes")) { return(message("Aborted.")) }
+    course$force = TRUE
   }
   
   course$chapters = lapply(course$chapters, function(x) { as.integer(x) }) # put ids in array
