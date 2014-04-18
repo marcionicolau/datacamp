@@ -32,6 +32,7 @@ author_course = function(course_name, ...) {
   message("Switching to course directory...")
   suppressMessages(author(deckdir = course_name,  use_git = FALSE, scaffold = system.file('skeleton', package = 'datacamp'), open_rmd = FALSE, ...))  
   message("Created course.yml and first chapter file.")
+  file.edit("chapter1.Rmd")
   message("Now open these files and start editing your course.")
 }
 
