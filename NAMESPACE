@@ -1,6 +1,5 @@
 export(author_course)
 export(datacamp_login)
-export(upload_all_chapters)
 export(upload_chapter)
 export(upload_course)
 import(RCurl)

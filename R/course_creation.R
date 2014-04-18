@@ -139,34 +139,3 @@ upload_chapter = function(input_file, force = FALSE, open = TRUE, ... ) {
   theJSON = render_chapter_json_for_datacamp(input_file, payload, force) # Get the JSON
   upload_chapter_json(theJSON, input_file, open = open) # Upload everything
 }
-
-#' Upload all chapters
-#' 
-#' Loop over all \code{.Rmd} files in the course directory and upload them using the \code{upload_chapter()} function.
-#' 
-#' @usage upload_all_chapters()
-#' @return No return values.
-#' @examples 
-#' \dontrun{
-#' upload_all_chapters()
-#' }
-#' @export
-upload_all_chapters = function() {
-  require("slidify")
-  if (!datacamp_logged_in()) { datacamp_login() }
-  if (!file.exists("course.yml")) { return(message("Error: Seems like there is no course.yml file in the current directory.")) }
-  
-  chapters = list.files(pattern="*.Rmd") # list all chapters in the directory  
-  if (length(chapters)==0) { stop("There seem to be no chapters (in '.Rmd' format) in the current directory") }
-  
-  if (length(chapters) > 0) { 
-    for (i in 1:length(chapters)) {
-      message(paste0("Start uploading chapter: ", chapters[i]) ," ...")
-      message("...uploading...")
-      invisible( capture.output( suppressMessages(upload_chapter(chapters[i], open = FALSE)) ) )
-      message(paste0("Successfully uploaded ", chapters[i],"!"))
-      message("###")
-    }
-    message("### Succesfully uploaded all chapters ###")
-  } 
-}
