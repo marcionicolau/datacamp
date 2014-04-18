@@ -130,7 +130,7 @@ author_chapter("R_for_dummies")
 If you already placed your course on the online DataCamp platform, you can upload a new or existing chapter via the function `upload_chapter("chapter_name")`. If your course is not yet on the online DataCamp platform, you first need to run the command `upload_course()`.
 ```
 # Upload the chapter "R for dummies"
-`upload_chapter("R_for_dummies.Rmd")`
+upload_chapter("R_for_dummies.Rmd")
 ```
 #####I want to remove a chapter in my course. Can I do this?
 Yes you can! To remove chapters out of a course, you need to go to your `course.yml` file. Here you see a list of all the chapters included in your course (in this case two), with their chapter ID: 
