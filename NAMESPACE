@@ -1,3 +1,4 @@
+export(author_chapter)
 export(author_course)
 export(datacamp_login)
 export(upload_chapter)
