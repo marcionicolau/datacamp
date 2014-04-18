@@ -36,6 +36,29 @@ author_course = function(course_name, ...) {
   message("Now open these files and start editing your course.")
 }
 
+#' Create a new chapter 
+#' 
+#' Creates an R Markdown file for a new course chapter in the current working directory.
+#' The R markdown file already contains a template which is opened for editing.
+#' 
+#' @param chapter_name Character with the name of the chapter you'd like to create. 
+#' 
+#' @examples
+#' \dontrun{
+#' author_chapter("chapter2")
+#' }
+#'@export
+author_chapter = function(chapter_name=NULL) {
+  if (is.null(chapter_name)) { 
+    stop("Please provide a chapter name.") 
+  } 
+  to_file_path = paste(chapter_name, ".Rmd",sep="")
+  from_file_path = paste(system.file('skeleton', package = 'datacamp'), "/chapter1.Rmd", sep="")
+  file.copy(from_file_path, to_file_path)
+  message(paste("Creating chapter: ", to_file_path, ".", sep = ""))
+  file.edit(to_file_path)
+}
+
 #' Log in to DataCamp.com via R
 #' 
 #' To be able to upload your course to the DataCamp platform, you need to log in to set-up the connection. The function will prompt for your
