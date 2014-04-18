@@ -115,7 +115,7 @@ datacamp_login = function() {
 #' upload_course() 
 #' }
 #' @export
-upload_course = function(open = TRUE) { 
+upload_course = function(open = TRUE, force = FALSE) { 
   require("slidify")
   if (!datacamp_logged_in()) { datacamp_login() }
   course = load_course_yaml()
@@ -123,6 +123,11 @@ upload_course = function(open = TRUE) {
   # TODO?
   if (is.null(course$id)) {
     sure = readline("No id found in course.yml. This will create a new course, are you sure you want to continue? (Y/N) ")
+    if (!(sure == "y" || sure == "Y" || sure == "yes" || sure == "Yes")) { return(message("Aborted.")) }
+  }
+  
+  if (force == TRUE) {
+    sure = readline("Using 'force' will delete chapters online that are not specified in your course.yml. Are you sure you want to continue? (Y/N) ")
     if (!(sure == "y" || sure == "Y" || sure == "yes" || sure == "Yes")) { return(message("Aborted.")) }
   }
   
