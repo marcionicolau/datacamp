@@ -94,12 +94,7 @@ datacamp_login = function() {
 upload_course = function(open = TRUE) { 
   require("slidify")
   if (!datacamp_logged_in()) { datacamp_login() }
-  if (!file.exists("course.yml")) { return(message("Error: Seems like there is no course.yml file in the current directory.")) }
-  course = yaml.load_file("course.yml")
-  if (is.null(course$id)) {
-    sure = readline("No id found in course.yml. This will create a new course, are you sure you want to continue? (Y/N) ")
-    if (!(sure == "y" || sure == "Y" || sure == "yes" || sure == "Yes")) { return(message("Aborted.")) }
-  }
+  course = load_course_yaml()
   course$chapters = lapply(course$chapters, function(x) { as.integer(x) }) # put ids in array
   the_course_json = toJSON(course)
   upload_course_json(the_course_json)
