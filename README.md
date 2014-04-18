@@ -13,7 +13,7 @@ Courses are created locally using R Markdown files and managed with a complement
 - **The R interface - Use R Markdown and the datacamp R package to create interactive courses:**<br>
 The datacamp R package enables you to write interactive R courses in R Markdown (e.g. using RStudio locally) and then upload them to the datacamp.com platform. The DataCamp package is essentially a wrapper around the [slidify](http://slidify.org/) package. This way, you can also use existing R Markdown files as the basis of your interactive courses, and collaborate easily with others on courses (e.g. by sharing the Markdown files on github). Have a look at the [R Markdown files](https://github.com/data-camp/introduction_to_R) of the "Introduction to R" course.
 - **The web interface - Course management:**<br>
-After uploading chapters to datacamp.com, you can use the webinterface to view and organize your courses with their chapters. You can use the web interface to make sure your course was uploaded correctly and make various changes to the course's state.
+After uploading chapters to datacamp.com, you can use the [webinterface](https://teach.datacamp.com) to view and organize your courses with their chapters. You can use this interface to make sure your course was uploaded correctly, make various changes to the course's state and get a preview on how the user will see the course.
 
 ## Getting started
 
