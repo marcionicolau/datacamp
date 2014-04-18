@@ -119,22 +119,21 @@ The key ingredient to an interactive course is the Submission Correctness Test (
 ##Most frequently asked questions
 
 #####How can I create a new chapter?
-First, make sure the current working directory matches with the course directory you want to create a chapter for. Next, add a new chapter to the course with the help of the `new_chapter("name_chapter")` function. This will create and open an R Markdown file named `name_chapter.Rmd`.  
+First, make sure the current working directory matches with the course directory you want to create a chapter for. Next, add a new chapter to the course with the help of the `author_chapter("chapter_name")` function. This will create and open an R Markdown file named `chapter_name.Rmd`.  
 ```
 # Make sure to set the correct working directory
-setwd("/Users/course_name")
 
 # Add a new chapter "R for dummies". This will open an R Markdown file.
-new_chapter("R_for_dummies")
+author_chapter("R_for_dummies")
 ```
 #####My chapter is finished, how do I upload it to the DataCamp platform?
-If you already placed your course on the online DataCamp platform, you can upload a new or existing chapter via the function `upload_chapter("name_chapter")`. If your course is not yet on the online DataCamp platform, you first need to run the command `upload_course()`.
+If you already placed your course on the online DataCamp platform, you can upload a new or existing chapter via the function `upload_chapter("chapter_name")`. If your course is not yet on the online DataCamp platform, you first need to run the command `upload_course()`.
 ```
 # Upload the chapter "R for dummies"
-`upload_chapter("R_for_dummies")`
+upload_chapter("R_for_dummies.Rmd")
 ```
 #####I want to remove a chapter in my course. Can I do this?
-Yes you can! To remove chapters out of a course, you need to go to your `course.yml` file. Here you see a list of all the chapters included in your course(in this case two), with their chapter ID: 
+Yes you can! To remove chapters out of a course, you need to go to your `course.yml` file. Here you see a list of all the chapters included in your course (in this case two), with their chapter ID: 
 ```
 # e.g. course.yml
 id: 314
@@ -145,7 +144,7 @@ chapters:
   - chapter1.Rmd: 753
   - chapter2.Rmd: 760
 ```
-To remove a chapter out of a course, you just need to remove the corresponding chapter name and ID in the Yaml file. So suppose you want to remove `chapter1.Rmd` from the course, your Yaml file needs to look like this:
+To remove a chapter from a course, you just need to remove the corresponding chapter name and ID in the Yaml file. So suppose you want to remove `chapter1.Rmd` from the course, your Yaml file needs to look like this:
 ```
 # e.g. course.yml
 id: 314
@@ -158,6 +157,7 @@ chapters:
 To make these changes visible on the DataCamp platform, you need to re-upload the course via `upload_course()`.
 
 <i>Note: Removing the first chapter from the Yaml file, does not remove the R Markdown file `chapter1.Rmd` in your course map. So chapter content will not get lost, and you can always re-add the chapter in a later phase.  
+
 ##### How can I add exercises to a chapter?  
 Adding exercises to a chapter is easy. In every R Markdown file of a chapter, the start of a new exercise is indicated by `---`, followed by the different components of an exercise: `## Exercise Title`, `*** =instructions`, `*** =hint`, `*** =pre_exercise_code`, `*** =solution`, `*** =sample_code`, and `*** =sct`. 
 
@@ -214,4 +214,4 @@ Now just delete all components of the second exercise. Make sure to delete the `
 *** =sct
 ```
 
-###### If you still didn't find the answer you were looking for, just send an e-mail to <b>info@datacamp.com</b>.  
+###### If you still didn't find the answer you were looking for, just send an e-mail to <b>teach@datacamp.com</b>.  
