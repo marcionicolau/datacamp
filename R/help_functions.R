@@ -109,7 +109,7 @@ add_chapter_to_course_yml = function(chapter_file_name, chapter_id) {
     yaml_list = load_course_yaml()
     
     n = length(yaml_list$chapters)
-    yaml_list$chapters[[n+1]] = structure(list(chapter_id), names=chapter_file_name)
+    yaml_list$chapters[[n+1]] = structure(list(chapter_id), names = chapter_file_name)
 
     yaml_output = as.yaml(yaml_list,line.sep="\n")
     write(yaml_output, file="course.yml")
@@ -205,8 +205,8 @@ make_multiple_choice_vector = function(instructions) {
   pattern = "<li>(.*?)</li>"
   instruction_lines =  strsplit(instructions,"\n")[[1]]
   r = regexec(pattern, instruction_lines)
-  matches = regmatches(instruction_lines,r)
-  extracted_matches = sapply(matches,function(x) x[2])
+  matches = regmatches(instruction_lines, r)
+  extracted_matches = sapply(matches, function(x) x[2])
   multiple_choice_vector = extracted_matches[!is.na(extracted_matches)]
   
   return(multiple_choice_vector)
@@ -216,9 +216,9 @@ make_multiple_choice_vector = function(instructions) {
 load_course_yaml = function() { 
   # Step 1: Load the yaml file such that we have a list with all course information:
   if (!file.exists("course.yml")) { 
-    stop("Seems like there is no course.yml file in the current directory.")) 
+    stop("Seems like there is no course.yml file in the current directory.") 
   }
-  course = try(yaml.load_file("course.yml"))
+  course = try(suppressWarnings(yaml.load_file("course.yml")))
   if (inherits(course,"try-error")) {
     stop(paste("There's a problem loading your course.yml file. Please check the documentation to find out what the course.yml file should contain. Go to:",doc_url()))
   }
@@ -239,6 +239,7 @@ load_course_yaml = function() {
 
 # Check the course yaml object
 check_course_object = function(course) {
+  ## STEP 1: Check the course info
   # All basic info present in yaml?
   min_names = c("title", "author_field", "description")
   present_names = min_names %in% names(course)
@@ -258,6 +259,46 @@ check_course_object = function(course) {
                ".\nThese cannot be empty. Please add that in your course.yml file.\nHave a look at the documentation on: ", doc_url(),".",sep=""))
   }
   
+  ## STEP 2: Check the chapters
+  check_chapters(course)
+  
+  invisible()
+}
+
+# Checks on chapter part:
+check_chapters = function(course) {
+  chapters = course[["chapters"]]
+  if (!is.null(chapters)) {
+    chapters = unlist(chapters)
+    if (!is.vector(chapters)) {
+      stop(paste("Something is wrong with the chapters section in your course.yml file.\nPlease check the documentation at: ",
+                 doc_url(),".", sep=""))
+    }
+    
+    # Are the chapter ids unique and do they exist?
+    empty_chapters = sapply(chapters, function(x){
+      is.null(x) || (x == "") || (x == " ") || is.na(x)
+    })
+    if (any(empty_chapters) || (length(course$chapters)!=length(chapters))) {
+      stop(paste("Something is wrong with the chapters section in your course.yml file.\nYour chapter id can't be empty.\nPlease check the documentation at: ",
+                 doc_url(), ".", sep=""))
+    }
+    
+    if (length(chapters) != length(unique(chapters))) {
+      stop(paste("Something is wrong with the chapters section in your course.yml file.\nYour chapter ids should be unique.\nPlease check the documentation at: ",
+                 doc_url(), ".", sep=""))
+    }
+    # Are the Rmd files unique and do they exist?
+    if (length(names(chapters)) != length(unique(names(chapters)))) {
+      stop(paste("Something is wrong with the chapters section in your course.yml file.\nYour chapter file names should be unique.\nPlease check the documentation at: ",
+                 doc_url(), ".", sep=""))
+    }
+    existing_files = file.exists(names(chapters))
+    if (!all(all(existing_files))) {
+      stop(paste("Something is wrong with the chapters section in your course.yml file.\nThe following files are specified in the course.yml but do not exist in your working directory: ",
+                 names(chapters)[!existing_files],".", sep=""))
+    }    
+  }
 }
 
 # Documentation path
