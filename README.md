@@ -58,8 +58,8 @@ datacamp_login()
 This will prompt you for your username and password and log you in to the datacamp server. Note that you must also log into datacamp.com with your browser.
 
 ###The `course.yml` file
-This file contains information about your course and the structure of its chapters. After `author_course()`, you get the following scaffold:
-   ```yml
+This file contains information about your course and the structure of its chapters. After running `author_course()`, a `course.yml` file is created in your course directory. This `course.yml` file has the following scaffold:
+```yml
 # course.yml scaffold
 title: Insert the course title here
 author_field: The author(s) name(s)
