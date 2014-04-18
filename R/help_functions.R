@@ -229,10 +229,10 @@ load_course_yaml = function() {
   check_course_object(course)
 
   # Only relevant when uploading (TODO?)
-  if (is.null(course$id)) {
-    sure = readline("No id found in course.yml. This will create a new course, are you sure you want to continue? (Y/N) ")
-    if (!(sure == "y" || sure == "Y" || sure == "yes" || sure == "Yes")) { return(message("Aborted.")) }
-  }
+#   if (is.null(course$id)) {
+#     sure = readline("No id found in course.yml. This will create a new course, are you sure you want to continue? (Y/N) ")
+#     if (!(sure == "y" || sure == "Y" || sure == "yes" || sure == "Yes")) { return(message("Aborted.")) }
+#   }
 
   return(course)
 }
