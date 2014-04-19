@@ -66,6 +66,7 @@ Hints help the students to find a correct solution for the exercise. Hints are o
 # Based on these inputs the SCT returns:
 # (i) whether the students code was correct
 # (ii) a message to the student to either help him find what was wrong or congragulate him on finding the solution.
+DM.result = list(TRUE,"Well done!")
 ```
 
 --- type:MultipleChoiceExercise
@@ -99,6 +100,11 @@ Hint here.
 
 ```{r,eval=FALSE}
 # Sample code here
+if (DM.result == 1) {
+  DM.result = list(TRUE,"Well done!")
+} else {
+  DM.result = list(FALSE,"Wrong!")
+}
 ```
 
 *** =sct
@@ -145,4 +151,9 @@ hist(rnorm(1000))
 
 ```{r,eval=FALSE}
 # Submission Correctness Test here
+if (DM.result == 1) {
+  DM.result = list(TRUE,"Well done!")
+} else {
+  DM.result = list(FALSE,"Wrong!")
+}
 ```

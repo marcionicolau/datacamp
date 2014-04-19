@@ -115,7 +115,7 @@ datacamp_login = function() {
 #' @param open boolean, TRUE by default, determines whether a browser window should open, showing the course creation web interface
 #' @examples 
 #' \dontrun{
-#' upload_course() 
+#' upload_course()
 #' }
 #' @export
 upload_course = function(open = TRUE, force = FALSE) { 
