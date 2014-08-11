@@ -11,7 +11,7 @@ Creating interactive courses for data analysis with R can and should be easy. Th
 Courses are created locally using R Markdown files and managed with a complementary web interface on datacamp.com.
 
 - **The R interface - Use R Markdown and the datacamp R package to create interactive courses:**<br>
-The datacamp R package enables you to write interactive R courses in R Markdown (e.g. using RStudio locally) and to then upload them to the datacamp.com platform. The DataCamp package is essentially a wrapper around the [slidify](http://slidify.org/) package. This way you can also use existing R Markdown files as the basis of your interactive courses and collaborate easily with others on courses (e.g. by sharing the Markdown files on GitHub). Have a look at the [R Markdown files](https://github.com/data-camp/introduction_to_R) of the "Introduction to R" course.
+The datacamp R package enables you to write interactive R courses in R Markdown (e.g. using RStudio locally) and to then upload them to the datacamp.com platform. The DataCamp package is essentially a wrapper around the [slidify](http://slidify.org/) package. This way, you can also use existing R Markdown files as the basis of your interactive courses and collaborate easily with others on courses (e.g. by sharing the Markdown files on GitHub). Have a look at the [R Markdown files](https://github.com/data-camp/introduction_to_R) of the "Introduction to R" course.
 - **The web interface - Course management:**<br>
 After uploading chapters to datacamp.com, you can use the [webinterface](https://teach.datacamp.com) to view and to organize your courses with their chapters. You can use this interface to make sure that your course was uploaded correctly, to make various changes to the course's state and to get a preview on how the user will see the course.
 
@@ -65,7 +65,7 @@ title: Insert the course title here
 author_field: The author(s) name(s)
 description: Insert course description here
 ```
-Change the fields and call the function `upload_course()`. This will create your course and add its ID to the `course.yml` file. This way your local course is linked to the one on datacamp.com.
+Change the fields and call the function `upload_course()`. This will create your course and add its ID to the `course.yml` file. This way, your local course is linked to the one on datacamp.com.
 ```yml
 # course.yml after creation on server
 id: 314
@@ -111,7 +111,7 @@ chapters:
 Any changes to this list require the course to be uploaded with `upload_course()` for the changes to take effect.
 
 ###Share the love
-A course is just a collection of chapters, and a chapter is essentially just a simple R markdown document. Therefore, you can easily collaborate with others on a course. For example, by sharing the [R markdown documents](https://github.com/data-camp/introduction_to_R) on GitHub. We believe this "open-course" type of collaboration for interactive R and statistics courses will benefit everyone. Check out the open-source repo of our "Introduction to R" course and help us improve it.
+A course is just a collection of chapters, and a chapter is essentially just a simple R Markdown document. Therefore, you can easily collaborate with others on a course. For example, by sharing the [R Markdown documents](https://github.com/data-camp/introduction_to_R) on GitHub. We believe this "open-course" type of collaboration for interactive R and statistics courses will benefit everyone. Check out the open-source repo of our "Introduction to R" course and help us improve it.
 
 
 ## Submission Correctness Tests
