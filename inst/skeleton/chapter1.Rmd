@@ -157,3 +157,14 @@ if (DM.result == 1) {
   DM.result = list(FALSE,"Wrong!")
 }
 ```
+
+--- type:VideoExercise
+## This exercise contains a video!
+
+If necessary, you can add a description here.
+
+*** =video_link
+
+```{r,eval=FALSE}
+//player.vimeo.com/video/97249290
+```

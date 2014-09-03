@@ -1,19 +1,19 @@
 [![Build Status](https://api.travis-ci.org/Data-Camp/datacamp.svg?branch=master)](https://travis-ci.org/Data-Camp/datacamp)
 <p align="center">
-<img src="https://s3.amazonaws.com/assets.datacamp.com/maintenance/logo.png" width="250">
+<img src="https://s3.amazonaws.com/assets.datacamp.com/img/logo/logo_blue_full.svg" width="250">
 </p>
 
 # Build your own interactive course(s)!
 ## Introduction
 Creating interactive courses for data analysis with R can and should be easy. This tutorial explains **how you can create interactive courses** on the DataCamp platform. Furthermore, the tutorial explains the **Submission Correctness Test** - the key concept to add interactivity to your course or tutorial.
 
-## Create and managing interactive courses
+## Creating and managing interactive courses
 Courses are created locally using R Markdown files and managed with a complementary web interface on datacamp.com.
 
 - **The R interface - Use R Markdown and the datacamp R package to create interactive courses:**<br>
-The datacamp R package enables you to write interactive R courses in R Markdown (e.g. using RStudio locally) and then upload them to the datacamp.com platform. The DataCamp package is essentially a wrapper around the [slidify](http://slidify.org/) package. This way, you can also use existing R Markdown files as the basis of your interactive courses, and collaborate easily with others on courses (e.g. by sharing the Markdown files on github). Have a look at the [R Markdown files](https://github.com/data-camp/introduction_to_R) of the "Introduction to R" course.
+The datacamp R package enables you to write interactive R courses in R Markdown (e.g. using RStudio locally) and to then upload them to the datacamp.com platform. The DataCamp package is essentially a wrapper around the [slidify](http://slidify.org/) package. This way, you can also use existing R Markdown files as the basis of your interactive courses and collaborate easily with others on courses (e.g. by sharing the Markdown files on GitHub). Have a look at the [R Markdown files](https://github.com/data-camp/introduction_to_R) of the "Introduction to R" course.
 - **The web interface - Course management:**<br>
-After uploading chapters to datacamp.com, you can use the [webinterface](https://teach.datacamp.com) to view and organize your courses with their chapters. You can use this interface to make sure your course was uploaded correctly, make various changes to the course's state and get a preview on how the user will see the course.
+After uploading chapters to datacamp.com, you can use the [webinterface](https://teach.datacamp.com) to view and to organize your courses with their chapters. You can use this interface to make sure that your course was uploaded correctly, to make various changes to the course's state and to get a preview on how the user will see the course.
 
 ## Getting started
 
@@ -34,7 +34,7 @@ The code above will download and install the datacamp R package. Alternatively, 
 author_course("course_name")
 ```
 The `author_course` function will:
-  1. create a folder in you current working directory with the name "course_name"
+  1. create a folder in your current working directory with the name "course_name"
   2. create a `course.yml` file, a scaffold to create your course
   3. create a `chapter1.Rmd` file, a scaffold for creating your first chapter
 The generated template contains extra instructions on the building blocks of chapters. We strongly advise you to put your folder under git source control at this point.
@@ -55,7 +55,7 @@ Note that the chapter `.Rmd` files can have any chosen name.
    ```ruby
 datacamp_login()
 ```
-This will prompt you for your username and password and log you in to the datacamp server. Note that you must also log into datacamp.com with your browser.
+This will prompt you for your username and password to log into the datacamp server. Note that you must also log into datacamp.com with your browser.
 
 ###The `course.yml` file
 This file contains information about your course and the structure of its chapters. After running `author_course()`, a `course.yml` file is created in your course directory. This `course.yml` file has the following scaffold:
@@ -65,7 +65,7 @@ title: Insert the course title here
 author_field: The author(s) name(s)
 description: Insert course description here
 ```
-Change the fields and call the function `upload_course()`. This will create your course and add its id to the `course.yml` file. This way your local course is linked to the one on datacamp.com.
+Change the fields and call the function `upload_course()`. This will create your course and add its ID to the `course.yml` file. This way, your local course is linked to the one on datacamp.com.
 ```yml
 # course.yml after creation on server
 id: 314
@@ -75,7 +75,7 @@ description: A first course
 ```
 
 ###Uploading chapters to datacamp.com
-Every chapter is described in its corresponding `chapterX.Rmd` file. The first time you create a chapter, it's a good idea to start from the `chapter1.Rmd` template that was generated using `author_course("course_name")`. This template contains information about the markup language, different types of exercises, etc.
+Every chapter is described in its corresponding `chapterX.Rmd` file. The first time that you create a chapter, it is a good idea to start from the `chapter1.Rmd` template that was generated using `author_course("course_name")`. This template contains information about the markup language, the different types of exercises, etc.
 ```yml
 # chapter1.Rmd scaffold
 --- 
@@ -100,7 +100,7 @@ chapters:
   - chapter1.Rmd: 753
   - chapter2.Rmd: 760
 ```
-As you can see, the file contains a list of chapters with a mapping of their file names on their id. The order of the list dictates the order of the chapters within the course. This helps you organize your course and avoid overwriting chapters. For example, say we want chapter 2 to appear first on datacamp.com:
+As you can see, the file contains a list of chapters with a mapping of their file names on their ID. The order of the list dictates the order of the chapters within the course. This helps you to organize your course and to avoid overwriting chapters. For example, suppose we want chapter 2 to appear first on datacamp.com:
 ```yml
 # course.yml
 ...
@@ -108,10 +108,10 @@ chapters:
   - chapter2.Rmd: 760
   - chapter1.Rmd: 753
 ```
-Any changes to this list requires the course to be uploaded with `upload_course()` for changes to take effect.
+Any changes to this list require the course to be uploaded with `upload_course()` for the changes to take effect.
 
 ###Share the love
-A course is just a collection of chapters, and a chapter is essentially just a simple R markdown document. Therefore, you can easily collaborate with others on a course. For example, by sharing the [R markdown documents](https://github.com/data-camp/introduction_to_R) on github. We believe this "open-course" type of collaboration for interactive R and statistics courses will benefit everyone. Check out the open-source repo of our Introduction to R course and help us improve it.
+A course is just a collection of chapters, and a chapter is essentially just a simple R Markdown document. Therefore, you can easily collaborate with others on a course. For example, by sharing the [R Markdown documents](https://github.com/data-camp/introduction_to_R) on GitHub. We believe this "open-course" type of collaboration for interactive R and statistics courses will benefit everyone. Check out the open-source repo of our "Introduction to R" course and help us improve it.
 
 
 ## Submission Correctness Tests
@@ -120,7 +120,7 @@ The key ingredient to an interactive course is the Submission Correctness Test (
 ##Most frequently asked questions
 
 #####How can I create a new chapter?
-First, make sure the current working directory matches with the course directory you want to create a chapter for. Next, add a new chapter to the course with the help of the `author_chapter("chapter_name")` function. This will create and open an R Markdown file named `chapter_name.Rmd`.  
+First, make sure that the current working directory matches with the course directory for which you want to create a chapter. Next, add a new chapter to the course with the help of the `author_chapter("chapter_name")` function. This will create and open an R Markdown file named `chapter_name.Rmd`.  
 ```
 # Make sure to set the correct working directory
 
@@ -134,7 +134,7 @@ If you already placed your course on the online DataCamp platform, you can uploa
 upload_chapter("R_for_dummies.Rmd")
 ```
 #####I want to remove a chapter in my course. Can I do this?
-Yes you can! To remove chapters out of a course, you need to go to your `course.yml` file. Here you see a list of all the chapters included in your course (in this case two), with their chapter ID: 
+Yes you can! To remove chapters out of a course, you need to go to your `course.yml` file. Here you will see a list of all the chapters included in your course (in this case two), with their chapter ID: 
 ```
 # e.g. course.yml
 id: 314
@@ -157,7 +157,7 @@ chapters:
 ```
 To make these changes visible on the DataCamp platform, you need to re-upload the course via `upload_course()`.
 
-<i>Note: Removing the first chapter from the Yaml file, does not remove the R Markdown file `chapter1.Rmd` in your course map. So chapter content will not get lost, and you can always re-add the chapter in a later phase.  
+<i>Note that removing the first chapter from the Yaml file does not remove the R Markdown file `chapter1.Rmd` in your course map. So chapter content will not get lost, and you can always re-add the chapter in a later phase.  
 
 ##### How can I add exercises to a chapter?  
 Adding exercises to a chapter is easy. In every R Markdown file of a chapter, the start of a new exercise is indicated by `---`, followed by the different components of an exercise: `## Exercise Title`, `*** =instructions`, `*** =hint`, `*** =pre_exercise_code`, `*** =solution`, `*** =sample_code`, and `*** =sct`. 
@@ -215,4 +215,4 @@ Now just delete all components of the second exercise. Make sure to delete the `
 *** =sct
 ```
 
-###### If you still didn't find the answer you were looking for, just send an e-mail to <b>teach@datacamp.com</b>.  
+###### If you still did not find the answer that you were looking for, just send an e-mail to <b>teach@datacamp.com</b>.  
