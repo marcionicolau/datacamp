@@ -88,7 +88,7 @@ datacamp_login = function() {
     redirect_base_url = paste0("https://teach-", subdomain, ".datacamp.com/courses")
   }
   
-  url = paste0(base_url, "/users/details.json?email=", email, "&password=", pw) 
+  url = paste0(base_url, "/users/details.json?email=", curlEscape(email), "&password=", curlEscape(pw)) 
   message("Logging in...")
   if (url.exists(url, ssl.verifypeer=FALSE)) {
     getURL(url, ssl.verifypeer=FALSE)
@@ -173,4 +173,5 @@ upload_chapter = function(input_file, force = FALSE, open = TRUE, ... ) {
   payload = suppressWarnings(slidify(input_file, return_page = TRUE,...)) # Get the payload  
   theJSON = render_chapter_json_for_datacamp(input_file, payload, force) # Get the JSON
   upload_chapter_json(theJSON, input_file, open = open) # Upload everything
+  clean_leftovers(input_file)
 }
