@@ -1,8 +1,0 @@
-id: 610
-title: Insert the course title here
-author_field: The author(s) name(s)
-description: Insert course description here
-chapters:
-- ch1.Rmd: 1344
-- ch2.Rmd: 1345
-
