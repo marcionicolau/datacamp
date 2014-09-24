@@ -173,4 +173,5 @@ upload_chapter = function(input_file, force = FALSE, open = TRUE, ... ) {
   payload = suppressWarnings(slidify(input_file, return_page = TRUE,...)) # Get the payload  
   theJSON = render_chapter_json_for_datacamp(input_file, payload, force) # Get the JSON
   upload_chapter_json(theJSON, input_file, open = open) # Upload everything
+  clean_leftovers(input_file)
 }
