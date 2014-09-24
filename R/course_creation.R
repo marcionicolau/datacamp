@@ -88,7 +88,7 @@ datacamp_login = function() {
     redirect_base_url = paste0("https://teach-", subdomain, ".datacamp.com/courses")
   }
   
-  url = paste0(base_url, "/users/details.json?email=", email, "&password=", pw) 
+  url = paste0(base_url, "/users/details.json?email=", curlEscape(email), "&password=", curlEscape(pw)) 
   message("Logging in...")
   if (url.exists(url, ssl.verifypeer=FALSE)) {
     getURL(url, ssl.verifypeer=FALSE)

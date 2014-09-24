@@ -17,4 +17,5 @@ Imports:
     RJSONIO,
     yaml,
     XML,
-    RCurl
+    RCurl,
+    jsonlite
