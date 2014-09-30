@@ -129,8 +129,11 @@ render_chapter_json_for_datacamp = function(file_name, payload, force) {
                     chapter=list(
                       title_meta=payload$title_meta,
                       title=payload$title,
-                      description=payload$description
-                    ) 
+                      description=payload$description,
+                      attachments=list(
+                        slides_link=payload$attachments$slides_link
+                      )
+                    )
   )
   
   # Extract chapter id and index from course.yml. If found, add to outputList
@@ -178,7 +181,7 @@ render_chapter_json_for_datacamp = function(file_name, payload, force) {
   output_list$chapter$exercises = exerciseList 
   
   # Make JSON: 
-  toJSON(output_list) 
+  toJSON(output_list)
 }
 
 extract_code = function(html) {
